@@ -1,0 +1,30 @@
+{
+    "measurements": [
+      { "value": "Grams", "label": "Grams (g)" },
+      { "value": "Kilograms", "label": "Kilograms (kg)" },
+      { "value": "Milligrams", "label": "Milligrams (mg)" },
+      { "value": "Ounces", "label": "Ounces (oz)" },
+      { "value": "Pounds", "label": "Pounds (lb)" },
+      { "value": "Milliliters", "label": "Milliliters (ml)" },
+      { "value": "Liters", "label": "Liters (l)" },
+      { "value": "Teaspoons", "label": "Teaspoons (tsp)" },
+      { "value": "Tablespoons", "label": "Tablespoons (tbsp)" },
+      { "value": "Cups", "label": "Cups (cup)" },
+      { "value": "Pints", "label": "Pints (pt)" },
+      { "value": "Quarts", "label": "Quarts (qt)" },
+      { "value": "Gallons", "label": "Gallons (gal)" },
+      { "value": "Fluid Ounces", "label": "Fluid Ounces (fl oz)" },
+      { "value": "Pinch", "label": "Pinch" },
+      { "value": "Dash", "label": "Dash" },
+      { "value": "Drop", "label": "Drop" },
+      { "value": "Slice", "label": "Slice" },
+      { "value": "Piece", "label": "Piece" },
+      { "value": "Clove", "label": "Clove" },
+      { "value": "Bunch", "label": "Bunch" },
+      { "value": "Stick", "label": "Stick" },
+      { "value": "Can", "label": "Can" },
+      { "value": "Jar", "label": "Jar" },
+      { "value": "Package", "label": "Package" },
+      { "value": "Bottle", "label": "Bottle" }
+    ]
+  }

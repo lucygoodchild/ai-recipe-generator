@@ -1,0 +1,44 @@
+.button-container {
+    padding: 2px;
+}
+
+.button {
+    background-color: #8e73a8;
+    color: white;
+    padding-right: 20px;
+    padding-left: 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  .default-color {
+    background-color: #a360b2;
+  }
+  
+  .purple {
+    background-color: #aa7bcc;
+  }
+
+  .yellow {
+    background-color: rgb(246, 235, 13);
+  }
+
+  .blue {
+    background-color: #76bcc1;;
+  }
+  
+  .button:hover {
+    filter: brightness(85%);
+  }
+  
+  .button:focus {
+    outline: solid;
+  }
+
+  .form button:disabled {
+    filter: brightness(85%);
+    cursor: not-allowed; 
+  }

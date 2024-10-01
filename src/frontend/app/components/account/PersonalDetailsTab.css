@@ -1,0 +1,32 @@
+.personal-details-content {
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    max-width: 250px;
+}
+
+.personal-details-content input {
+    border-color: grey
+}
+
+.details {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.details button {
+    width: fit-content;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.error {
+    color: rgb(225, 76, 76);
+    font-size: 12px;
+    margin-top: 0px;
+    text-align: left;
+    margin-left: 10px;
+  }

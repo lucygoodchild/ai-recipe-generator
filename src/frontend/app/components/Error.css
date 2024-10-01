@@ -1,0 +1,46 @@
+.error-pop-up {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  }
+
+.error-content {
+    position: relative;
+    background-color: #fff;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: 80vh;
+    text-align: center;
+  }
+
+.error-text {
+    padding: 30px;
+}
+
+.close-error-button {
+  background-color: white;
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  float: right
+}
+
+.close-error-button:hover {
+  filter: brightness(85%);
+}

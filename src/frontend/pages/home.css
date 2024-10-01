@@ -1,0 +1,54 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%
+  }
+
+  .app h1 {
+    color: rgb(80, 71, 71);
+  }
+  
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .flex-container {
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  @media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  .first-wrapper {
+    display: flex;
+    padding: 30px;
+    flex: 1;
+  }
+  
+  .second-third-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .button-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .button-text {
+    font-size: 14px;
+  }

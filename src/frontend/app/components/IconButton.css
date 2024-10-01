@@ -1,0 +1,19 @@
+.icon-button {
+    background-color: white;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-container {
+    padding: 2px;
+}
+
+.add-icon {
+    font-size: 24px;
+}
