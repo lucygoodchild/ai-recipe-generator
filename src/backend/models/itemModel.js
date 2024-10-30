@@ -4,6 +4,7 @@ const itemSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Item must have a name"],
+    unique: true,
     trim: true,
   },
   type: String,
