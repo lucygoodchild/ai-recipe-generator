@@ -11,8 +11,6 @@ export const fetchRecipes = async (itemObject, setRecipesOutput, setError) => {
     ),
   ];
 
-  console.log(items);
-
   try {
     const response = await fetch("/api/generateRecipes", {
       method: "POST",

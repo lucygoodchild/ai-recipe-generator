@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { addFavouriteRecipes } from "./../../utils/addFavouriteRecipes";
+import { fetchFavouriteRecipes } from "./../../utils/fetchFavouriteRecipes";
+import { removeFavouriteRecipes } from "./../../utils/removeFavouriteRecipes";
+import { useFavouriteRecipes } from "../contexts/favRecipesContext";
 import { IoMdClose } from "react-icons/io";
 import { FaRegHeart } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa6";
 import IconButton from "./IconButton";
 import ToolTip from "./ToolTip";
 import "./RecipesModal.css";
+import { AuthContext } from "../contexts/authContext";
 
 interface Recipe {
   title: string;
@@ -31,15 +36,47 @@ const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
   const [addToFavourites, setAddToFavourites] = useState(
     new Array(recipes.length).fill(false)
   );
+  const { setFavRecipes, addFavRecipe, removeFavRecipe } =
+    useFavouriteRecipes();
+  const { isLoggedIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    // Fetch all favourite recipes on component mount and set in global state
+    const loadRecipes = async () => {
+      const fetchedRecipes = await fetchFavouriteRecipes();
+      setFavRecipes(fetchedRecipes);
+    };
+    if (isLoggedIn) {
+      loadRecipes();
+    }
+  }, [isLoggedIn, setFavRecipes]);
 
   if (!isOpen) {
     return null;
   }
 
-  const handleAddToFavouritesClick = (index: number) => {
+  const handleAddToFavouritesClick = async (index: number) => {
     const newAddToFavourites = [...addToFavourites];
     newAddToFavourites[index] = !newAddToFavourites[index];
-    setAddToFavourites(newAddToFavourites);
+    const recipe = recipes[index];
+
+    try {
+      if (newAddToFavourites[index]) {
+        // Add to favourites
+        await addFavouriteRecipes(recipe);
+        // update state
+        addFavRecipe(recipe);
+      } else {
+        // need to get id
+        // Remove from favourites
+        await removeFavouriteRecipes(recipe);
+        // update state
+        removeFavRecipe(recipe);
+      }
+      setAddToFavourites(newAddToFavourites);
+    } catch (error) {
+      console.error("Failed to update favorites:", error);
+    }
   };
 
   return (

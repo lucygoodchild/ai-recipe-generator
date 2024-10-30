@@ -51,7 +51,8 @@
     "xss-clean": "^0.1.4"
   },
   "scripts": {
-    "dev": "cd src/frontend && next dev",
+    "frontend": "cd src/frontend && next dev",
+    "backend": "cd src/backend nodemon ./server.js",
     "build": "next build",
     "start": "next start"
   },

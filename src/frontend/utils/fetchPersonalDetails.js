@@ -1,6 +1,8 @@
 const dotenv = require("dotenv");
 dotenv.config({ path: "./../.env.local" });
 
+//TODO - remove hardcoded values
+
 export const fetchUsersPersonalDetails = async (userId) => {
   try {
     const response = await fetch(
