@@ -20,9 +20,6 @@ router.delete(
   userController.deleteMe
 );
 router.route("/").get(userController.getAllUsers);
-router
-  .route("/:id")
-  .get(userController.getPersonalDetailsOfUser)
-  .patch(authenticationController.protect, userController.addFavouriteRecipes);
+router.route("/:id").get(userController.getPersonalDetailsOfUser);
 
 module.exports = router;

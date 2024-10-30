@@ -57,14 +57,6 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.addFavouriteRecipes = catchAsync(async (req, res, next) => {
-  const favouriteRecipes = await User.findByIdAndUpdate({
-    ...req.user._id,
-    ...req.body,
-  });
-  res.status(201).json({ status: "success", data: favouriteRecipes });
-});
-
 exports.getPersonalDetailsOfUser = catchAsync(async (req, res, next) => {
   const personalDetails = await User.findById(req.params.id);
   if (!personalDetails) {

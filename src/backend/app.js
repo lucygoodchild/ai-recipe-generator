@@ -8,6 +8,7 @@ const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 const itemRouter = require("./routes/itemRoutes");
 const userRouter = require("./routes/userRoutes");
+const recipeRouter = require("./routes/recipeRoutes");
 const cors = require("cors");
 
 const corsOptions = {
@@ -51,6 +52,7 @@ app.use(express.static(`${__dirname}/public`));
 
 app.use("/api/v1/items", itemRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/favourite-recipes", recipeRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server :(`), 404);
