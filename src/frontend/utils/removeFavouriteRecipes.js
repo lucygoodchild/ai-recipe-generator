@@ -18,10 +18,12 @@ export const removeFavouriteRecipes = async (recipeId) => {
       );
     }
 
-    const data = await response.json();
-    return data.data;
+    await response.json();
+    toast.success("Recipe removed from favourites");
+    return true;
   } catch (err) {
     console.error(err);
     toast.error(`Uh oh something went wrong. Please try again!`);
+    return false;
   }
 };

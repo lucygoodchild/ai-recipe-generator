@@ -4,10 +4,11 @@ const FavouriteRecipesContext = createContext();
 
 export const FavouriteRecipesProvider = ({ children }) => {
   // Initialize state with an empty array
-  const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const [favouriteRecipes, setFavoriteRecipes] = useState([]);
 
   // Function to add a recipe
   const addFavRecipe = (recipe) => {
+    console.log(recipe);
     setFavoriteRecipes((prevRecipes) => {
       // Ensure prevRecipes is always an array
       if (!Array.isArray(prevRecipes)) {
@@ -40,7 +41,7 @@ export const FavouriteRecipesProvider = ({ children }) => {
 
   return (
     <FavouriteRecipesContext.Provider
-      value={{ favoriteRecipes, addFavRecipe, removeFavRecipe, setFavRecipes }}
+      value={{ favouriteRecipes, addFavRecipe, removeFavRecipe, setFavRecipes }}
     >
       {children}
     </FavouriteRecipesContext.Provider>
