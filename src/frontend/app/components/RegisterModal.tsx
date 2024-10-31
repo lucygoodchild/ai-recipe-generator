@@ -38,6 +38,7 @@ const RegisterModal = ({
       <div className="form">
         <form className="register-form" onSubmit={onSubmit}>
           <Input
+            id="register-form-name-input"
             type="text"
             onChange={onNameChange}
             placeHolderText="name"
@@ -45,6 +46,7 @@ const RegisterModal = ({
           ></Input>
           {nameError && <p className="error">{nameError}</p>}
           <Input
+            id="register-form-email-input"
             type="email"
             onChange={onEmailChange}
             placeHolderText="email address"
@@ -52,11 +54,13 @@ const RegisterModal = ({
           ></Input>
           {emailError && <p className="error">{emailError}</p>}
           <Input
+            id="register-form-password-input"
             type="password"
             onChange={onPasswordChange}
             placeHolderText="password"
           ></Input>
           <Input
+            id="register-form-confirmPassword-input"
             type="password"
             onChange={onPasswordConfirmChange}
             placeHolderText="confirm password"

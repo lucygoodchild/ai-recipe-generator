@@ -18,6 +18,7 @@ const DeleteAccountTab = () => {
         Enter your current password to delete your account
       </h5>
       <Input
+        id="delete-account-password-input"
         onChange={() => {}}
         placeHolderText="current password"
         onBlur={() => {}}

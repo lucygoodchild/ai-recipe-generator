@@ -32,6 +32,7 @@ const ForgotPasswordModal = ({
         </button>
         <form className="form" onSubmit={onSubmit}>
           <Input
+            id="forgot-password-email-input"
             type="email"
             onChange={onEmailChange}
             placeHolderText="email address"

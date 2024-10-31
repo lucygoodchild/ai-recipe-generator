@@ -30,6 +30,7 @@ const LoginModal = ({
       <div className="form">
         <form className="login-form" onSubmit={onSubmit}>
           <Input
+            id="login-form-email-input"
             type="email"
             onChange={onEmailChange}
             placeHolderText="email address"
@@ -37,6 +38,7 @@ const LoginModal = ({
           ></Input>
           {emailError && <p className="error">{emailError}</p>}
           <Input
+            id="login-form-password-input"
             type="password"
             onChange={onPasswordChange}
             placeHolderText="password"

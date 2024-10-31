@@ -15,6 +15,7 @@ const ChangePasswordTab = () => {
     <div className="personal-details-content">
       <h5> Enter your current password</h5>
       <Input
+        id="changePassword-password-input"
         onChange={() => {}}
         placeHolderText="current password"
         onBlur={() => {}}
@@ -22,6 +23,7 @@ const ChangePasswordTab = () => {
       ></Input>
       <h5> Enter your new password</h5>
       <Input
+        id="changePassword-new-password-input"
         onChange={() => {}}
         placeHolderText="new password"
         onBlur={() => {}}
@@ -30,6 +32,7 @@ const ChangePasswordTab = () => {
       <h5> Confirm your new password</h5>
       <div className="update-password-content">
         <Input
+          id="changePassword-confirm-new-password-input"
           onChange={() => {}}
           placeHolderText="confirm new password"
           onBlur={() => {}}

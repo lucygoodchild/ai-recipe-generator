@@ -2,6 +2,7 @@ import React, { forwardRef } from "react";
 import "./Input.css";
 
 interface InputProps {
+  id: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   placeHolderText: string;
   type: string;
@@ -9,11 +10,11 @@ interface InputProps {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ onChange, placeHolderText, type, onBlur }, ref) => {
+  ({ id, onChange, placeHolderText, type, onBlur }, ref) => {
     return (
       <input
         type={type}
-        id="item-input"
+        id={id}
         placeholder={placeHolderText}
         onChange={onChange}
         ref={ref}
