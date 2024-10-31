@@ -20,6 +20,7 @@ const ChangePasswordTab = () => {
         placeHolderText="current password"
         onBlur={() => {}}
         type="password"
+        autoComplete="current-password"
       ></Input>
       <h5> Enter your new password</h5>
       <Input
@@ -28,6 +29,7 @@ const ChangePasswordTab = () => {
         placeHolderText="new password"
         onBlur={() => {}}
         type="password"
+        autoComplete="new-password"
       ></Input>
       <h5> Confirm your new password</h5>
       <div className="update-password-content">
@@ -37,6 +39,7 @@ const ChangePasswordTab = () => {
           placeHolderText="confirm new password"
           onBlur={() => {}}
           type="password"
+          autoComplete="new-password"
         ></Input>
         <Button onClick={() => {}} text="update password"></Button>
       </div>

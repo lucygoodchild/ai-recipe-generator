@@ -7,10 +7,11 @@ interface InputProps {
   placeHolderText: string;
   type: string;
   onBlur?: React.ChangeEventHandler<HTMLInputElement>;
+  autoComplete?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ id, onChange, placeHolderText, type, onBlur }, ref) => {
+  ({ id, onChange, placeHolderText, type, onBlur, autoComplete }, ref) => {
     return (
       <input
         type={type}
@@ -19,6 +20,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         onChange={onChange}
         ref={ref}
         onBlur={onBlur}
+        autoComplete={autoComplete}
       ></input>
     );
   }

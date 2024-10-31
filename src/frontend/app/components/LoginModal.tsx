@@ -35,6 +35,7 @@ const LoginModal = ({
             onChange={onEmailChange}
             placeHolderText="email address"
             onBlur={onEmailBlur}
+            autoComplete="username"
           ></Input>
           {emailError && <p className="error">{emailError}</p>}
           <Input
@@ -42,6 +43,7 @@ const LoginModal = ({
             type="password"
             onChange={onPasswordChange}
             placeHolderText="password"
+            autoComplete="current-password"
           ></Input>
           {passwordError && <p className="error">{passwordError}</p>}
           <Button

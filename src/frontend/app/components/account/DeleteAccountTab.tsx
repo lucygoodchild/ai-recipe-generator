@@ -23,6 +23,7 @@ const DeleteAccountTab = () => {
         placeHolderText="current password"
         onBlur={() => {}}
         type="password"
+        autoComplete="current-password"
       ></Input>
       <div className="delete-account-btn">
         <Button onClick={() => {}} text="delete account"></Button>

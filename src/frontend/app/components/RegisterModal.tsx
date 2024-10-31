@@ -51,6 +51,7 @@ const RegisterModal = ({
             onChange={onEmailChange}
             placeHolderText="email address"
             onBlur={onEmailBlur}
+            autoComplete="username"
           ></Input>
           {emailError && <p className="error">{emailError}</p>}
           <Input
@@ -58,12 +59,14 @@ const RegisterModal = ({
             type="password"
             onChange={onPasswordChange}
             placeHolderText="password"
+            autoComplete="new-password"
           ></Input>
           <Input
             id="register-form-confirmPassword-input"
             type="password"
             onChange={onPasswordConfirmChange}
             placeHolderText="confirm password"
+            autoComplete="new-password"
           ></Input>
           {passwordConfirmError && (
             <p className="error">{passwordConfirmError}</p>

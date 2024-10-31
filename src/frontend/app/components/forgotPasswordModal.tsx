@@ -37,6 +37,7 @@ const ForgotPasswordModal = ({
             onChange={onEmailChange}
             placeHolderText="email address"
             onBlur={onEmailBlur}
+            autoComplete="username"
           ></Input>
           {emailError && <p className="error">{emailError}</p>}
           <Button
