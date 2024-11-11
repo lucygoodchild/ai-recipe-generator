@@ -101,7 +101,6 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
     quantity: string,
     measurement: string
   ) => {
-    console.log(measurement);
     setItemList((prev) =>
       prev.map((item) =>
         item._id === itemId ? { ...item, quantity, measurement } : item

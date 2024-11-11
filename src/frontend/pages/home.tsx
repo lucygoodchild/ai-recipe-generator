@@ -26,7 +26,6 @@ const Home = () => {
 
   useEffect(() => {
     const fetchAllItemsFromDB = async () => {
-      console.log("fetching...");
       try {
         const cupboardItems = await fetchItems("cupboard", userId);
         const fridgeItems = await fetchItems("fridge", userId);
@@ -43,7 +42,6 @@ const Home = () => {
     };
 
     const syncItemsWithDB = async () => {
-      console.log("syncing..");
       await syncItemsFromLocalStorageWithDB(userId);
     };
 
