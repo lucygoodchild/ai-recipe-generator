@@ -93,6 +93,7 @@ const PersonalDetailsTab = () => {
       <h5> Update your name</h5>
       <div className="details">
         <Input
+          id="personal-details-name-input"
           onChange={handleNameChange}
           placeHolderText={personalDetails.name}
           onBlur={handleNameBlur}
@@ -108,6 +109,7 @@ const PersonalDetailsTab = () => {
       <h5> Update your email</h5>
       <div className="details">
         <Input
+          id="personal-details-email-input"
           onChange={handleEmailChange}
           placeHolderText={personalDetails.email}
           onBlur={handleEmailBlur}

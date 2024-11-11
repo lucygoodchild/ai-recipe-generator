@@ -28,12 +28,19 @@ const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
   const toggleRecipe = (index: number) => {
     setExpandedRecipeIndex(expandedRecipeIndex === index ? null : index);
   };
+  const [addToFavourites, setAddToFavourites] = useState(
+    new Array(recipes.length).fill(false)
+  );
 
   if (!isOpen) {
     return null;
   }
 
-  console.log(recipes);
+  const handleAddToFavouritesClick = (index: number) => {
+    const newAddToFavourites = [...addToFavourites];
+    newAddToFavourites[index] = !newAddToFavourites[index];
+    setAddToFavourites(newAddToFavourites);
+  };
 
   return (
     <div className="modal-overlay">
@@ -59,12 +66,20 @@ const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
                     {recipe.title}
                   </h3>
                   <ToolTip
-                    text={"Add to favourites"}
+                    text={
+                      !addToFavourites[index]
+                        ? "Add recipe to favourites"
+                        : "Remove recipe from favourites"
+                    }
                     children={
                       <IconButton
-                        onClick={() => {}}
+                        onClick={() => handleAddToFavouritesClick(index)}
                         children={
-                          onMouseOver[index] ? <FaHeart /> : <FaRegHeart />
+                          addToFavourites[index] || onMouseOver[index] ? (
+                            <FaHeart />
+                          ) : (
+                            <FaRegHeart />
+                          )
                         }
                         onMouseOver={() => {
                           const newOnMouseOver = [...onMouseOver];

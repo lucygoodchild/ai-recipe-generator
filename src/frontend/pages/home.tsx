@@ -13,6 +13,7 @@ import "./home.css";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
+  const [loadingText, setLoadingText] = useState("");
   const [error, setError] = useState(null);
   const [recipesOutput, setRecipesOutput] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,13 +69,14 @@ const Home = () => {
       return;
     }
     setLoading(true);
+    setLoadingText("Fetching recipes");
     await fetchRecipes(items, setRecipesOutput, setError);
     setLoading(false);
+    setLoadingText("");
     setIsModalOpen(true);
   };
 
-  if (loading)
-    return <LoadingSpinner text={"Fetching recipes"}></LoadingSpinner>;
+  if (loading) return <LoadingSpinner text={loadingText}></LoadingSpinner>;
 
   if (error) {
     return (

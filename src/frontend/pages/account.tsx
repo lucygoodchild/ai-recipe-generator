@@ -1,17 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import { useRouter } from "next/router";
 import { IoIosArrowDown } from "react-icons/io";
-import LoadingSpinner from "../app/components/LoadingSpinner";
-import "./account.css";
 import PersonalDetailsTab from "../app/components/account/PersonalDetailsTab";
 import ChangePasswordTab from "../app/components/account/ChangePasswordTab";
 import DeleteAccountTab from "../app/components/account/DeleteAccountTab";
+import "./account.css";
 
 const Account = () => {
-  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("personal-details");
-  const router = useRouter();
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -25,8 +21,6 @@ const Account = () => {
         return null;
     }
   };
-
-  if (loading) return <LoadingSpinner />;
 
   return (
     <div className="account-page">
