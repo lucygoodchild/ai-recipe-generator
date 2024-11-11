@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { VscEdit } from "react-icons/vsc";
 import { IoIosArrowDown } from "react-icons/io";
@@ -26,7 +26,13 @@ function Item({
 }: ItemProps) {
   const [isExpanded, setIsExpanded] = useState(expandInput);
   const [quantity, setQuantity] = useState(initialQuantity);
-  const [measurement, setMeasurement] = useState(initialMeasurement);
+  const [measurement, setMeasurement] = useState(initialMeasurement || "Grams");
+
+  useEffect(() => {
+    if (!initialMeasurement) {
+      setMeasurement("Grams");
+    }
+  }, [initialMeasurement]);
 
   const handleEditClick = () => {
     setIsExpanded(true);

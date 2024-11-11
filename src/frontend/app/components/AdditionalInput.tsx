@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import IconButton from "./IconButton";
 import { CgAdd } from "react-icons/cg";
 import ToolTip from "./ToolTip";
@@ -37,9 +37,9 @@ const AdditionalInput = ({
             </option>
           ))}
         </select>
-        <ToolTip text={"Add quantity"}>
-          <IconButton onClick={handleAddQuantityClick} disabled={false}>
-            <CgAdd></CgAdd>
+        <ToolTip text="Add quantity">
+          <IconButton onClick={handleAddQuantityClick} disabled={!quantity}>
+            <CgAdd />
           </IconButton>
         </ToolTip>
       </div>
