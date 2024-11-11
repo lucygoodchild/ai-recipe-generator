@@ -133,6 +133,7 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
       })}
       <form>
         <Input
+          id="item-input"
           type="text"
           ref={inputRef}
           onChange={handleChange}

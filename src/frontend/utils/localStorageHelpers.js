@@ -1,3 +1,13 @@
+const generateMongoDBId = () => {
+  const timestamp = Math.floor(new Date().getTime() / 1000).toString(16);
+  return (
+    timestamp +
+    "xxxxxxxxxxxxxxxx"
+      .replace(/[x]/g, () => ((Math.random() * 16) | 0).toString(16))
+      .toLowerCase()
+  );
+};
+
 // Retrieve items from local storage
 export const getItemsFromLocalStorage = () => {
   const items = localStorage.getItem("items");
@@ -25,14 +35,12 @@ export const clearItemsFromLocalStorage = () => {
   localStorage.removeItem("items");
 };
 
-// Add item
+// Add item with a MongoDB-compatible ObjectId
 export const addItemToLocalStorage = (item) => {
-  const newItem = { ...item };
-
+  const newItem = { ...item, _id: generateMongoDBId() };
   const items = getItemsFromLocalStorage();
   items.push(newItem);
   saveItemsToLocalStorage(items);
-
   return newItem;
 };
 
@@ -53,8 +61,8 @@ export const editItemFromLocalStorage = (itemId, quantity, measurement) => {
 };
 
 // Delete item
-export const deleteItemFromLocalStorage = (name) => {
+export const deleteItemFromLocalStorage = (itemId) => {
   const items = getItemsFromLocalStorage();
-  const updatedItems = items.filter((item) => name !== item.name);
+  const updatedItems = items.filter((item) => item._id !== itemId);
   saveItemsToLocalStorage(updatedItems);
 };
