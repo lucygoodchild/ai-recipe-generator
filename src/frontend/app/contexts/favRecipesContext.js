@@ -8,7 +8,6 @@ export const FavouriteRecipesProvider = ({ children }) => {
 
   // Function to add a recipe
   const addFavRecipe = (recipe) => {
-    console.log(recipe);
     setFavoriteRecipes((prevRecipes) => {
       // Ensure prevRecipes is always an array
       if (!Array.isArray(prevRecipes)) {
