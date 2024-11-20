@@ -15,9 +15,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { items } = req.body;
   
   const prompt = `
-    I am providing you a list of food items I have in my kitchen with their quantity and measurement: ${items}. Assume always that I have salt, pepper, cooking oil etc. 
+    I am providing you a list of food items I have in my kitchen with their quantity and measurement: ${items}. Any items that are not for human consumption please ignore. Assume always that I have salt, pepper, cooking oil etc. 
     
-    I would like you to come up with 5 recipes that use the items I have (any items I don't have in your recipes, please make explicit in the ingredients list!).
+    I would like you to come up with 5 recipes that use the items I have (any items I don't have in your recipes, please make explicit in the ingredients list).
 
     Alongside the recipe ideas, I would like you to make detailed numbered list instructions for each recipe to create the recipe.
 
