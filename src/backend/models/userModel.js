@@ -45,7 +45,6 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
-  favouriteRecipes: Object,
 });
 
 //pre getting data and saving it to database:

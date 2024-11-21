@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
 const dotenv = require("dotenv");
-dotenv.config({ path: "./../.env.local" });
+dotenv.config({ path: "../../../env.local" });
 
 export const fetchItems = async (type, userId) => {
   try {
