@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import RegisterModal from "../app/components/RegisterModal";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "../app/components/LoadingSpinner";
-import { registerUser } from "./../utils/registerUser";
+import { registerUser } from "../utils/registerUser";
 import "./../styles/global.css";
 import "./register.css";
 

@@ -1,4 +1,5 @@
 const express = require("express");
+const next = require("next");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
@@ -12,7 +13,7 @@ const recipeRouter = require("./routes/recipeRoutes");
 const cors = require("cors");
 
 const corsOptions = {
-  origin: "http://localhost:8000", //"*" for prod
+  origin: "http://localhost:3000", //"*" for prod
   credentials: true,
   optionSuccessStatus: 200,
 };

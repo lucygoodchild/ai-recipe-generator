@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { fetchItems } from "../utils/fetchItems";
 import { fetchRecipes } from "../utils/fetchRecipes";
-import { AuthContext } from "./../app/contexts/authContext";
+import { AuthContext } from "../app/contexts/authContext";
 import { getSortedItemsFromLocalStorage } from "../utils/localStorageHelpers";
 import { syncItemsFromLocalStorageWithDB } from "../utils/syncLocalStorageToDB";
 import RecipeModal from "../app/components/RecipesModal";

@@ -1,16 +1,27 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-import { forgotPassword } from "./../utils/forgotPassword";
+import { loginUser } from "../utils/loginUser";
+import { AuthContext } from "../app/contexts/authContext";
+import LoginModal from "../app/components/LoginModal";
 import LoadingSpinner from "../app/components/LoadingSpinner";
-import ForgotPasswordModal from "../app/components/forgotPasswordModal";
+import "./login.css";
 
-const ForgotPassword = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { isLoggedIn, setIsLoggedIn, setUserId } = useContext(AuthContext);
   const router = useRouter();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.replace("/home");
+    }
+  }, [isLoggedIn, router]);
 
   const validateEmail = (email: string): boolean => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,24 +43,30 @@ const ForgotPassword = () => {
     setError(null);
   };
 
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setError(null);
+  };
+
+  const handleForgotPasswordClick = () => {
+    router.push("/forgotPassword");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Reset errors
     setEmailError(null);
+    setPasswordError(null);
     setError(null);
 
-    if (!validateEmail(email)) {
-      setEmailError("Please enter a valid email address");
-      return;
-    }
-
-    const response = await forgotPassword(email);
-    console.log(response);
-    if (response instanceof Error) {
-      setError(response.toString().split(":")[1].toString());
+    const loginResponse = await loginUser(email, password);
+    if (loginResponse instanceof Error) {
+      setError(loginResponse.toString().split(":")[1].toString());
     } else {
-      router.push("/login");
+      setIsLoggedIn(true);
+      setUserId(loginResponse.user._id);
+      router.push("/home");
     }
 
     setLoading(false);
@@ -58,15 +75,18 @@ const ForgotPassword = () => {
   if (loading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
-    <ForgotPasswordModal
+    <LoginModal
       onEmailBlur={handleEmailBlur}
       onEmailChange={handleEmailChange}
+      onPasswordChange={handlePasswordChange}
+      onForgotPasswordClick={handleForgotPasswordClick}
       onSubmit={handleSubmit}
       error={error}
+      passwordError={passwordError}
       emailError={emailError}
       onClick={handleSubmit}
-    ></ForgotPasswordModal>
+    ></LoginModal>
   );
 };
 
-export default ForgotPassword;
+export default LoginPage;

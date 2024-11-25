@@ -1,8 +1,8 @@
 import React from "react";
 import { ToastContainer } from "react-toastify";
 import { Nunito } from "next/font/google";
-import { AuthProvider } from "./../app/contexts/authProvider";
-import { FavouriteRecipesProvider } from "./../app/contexts/favRecipesContext";
+import { AuthProvider } from "../app/contexts/authProvider";
+import { FavouriteRecipesProvider } from "../app/contexts/favRecipesContext";
 import Header from "../app/components/Header";
 import "./../styles/global.css";
 import "./register.css";

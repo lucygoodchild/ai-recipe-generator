@@ -1,10 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-const dotenv = require("dotenv");
 const { OpenAI } = require("openai");
 
-dotenv.config({ path: "./../../.env.local" });
-const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+const apiKey = process.env.OPENAI_API_KEY;
 
 const openai = new OpenAI({
   apiKey: apiKey
