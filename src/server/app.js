@@ -12,7 +12,7 @@ const recipeRouter = require("./routes/recipeRoutes");
 const cors = require("cors");
 
 const corsOptions = {
-  origin: "http://localhost:3000", //"*" for prod
+  origin: "http://localhost:8000", //"*" for prod
   credentials: true,
   optionSuccessStatus: 200,
 };

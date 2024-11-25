@@ -1,7 +1,7 @@
 const AppError = require("../utils/appError");
-const Item = require("./../models/itemModel");
+const Item = require("../models/itemModel");
 const mongoose = require("mongoose");
-const catchAsync = require("./../utils/catchAsync");
+const catchAsync = require("../utils/catchAsync");
 
 exports.getAllItems = catchAsync(async (req, res, next) => {
   const items = await Item.find({ userId: req.query.userId });

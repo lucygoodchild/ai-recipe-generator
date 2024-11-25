@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const User = require("./../models/userModel");
+const User = require("../models/userModel");
 const AppError = require("../utils/appError");
-const catchAsync = require("./../utils/catchAsync");
+const catchAsync = require("../utils/catchAsync");
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};

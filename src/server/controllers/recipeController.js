@@ -1,7 +1,7 @@
 const AppError = require("../utils/appError");
-const Recipe = require("./../models/recipeModel");
+const Recipe = require("../models/recipeModel");
 const mongoose = require("mongoose");
-const catchAsync = require("./../utils/catchAsync");
+const catchAsync = require("../utils/catchAsync");
 
 exports.getUsersFavouriteRecipes = catchAsync(async (req, res, next) => {
   // Check if the provided IDs are valid ObjectId
