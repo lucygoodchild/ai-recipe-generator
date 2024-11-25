@@ -1,12 +1,9 @@
 import { toast } from "react-toastify";
 
-const dotenv = require("dotenv");
-dotenv.config({ path: "./../../.env.local" });
-
 export const removeFavouriteRecipes = async (recipeId, userId) => {
   try {
     const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/favourites/${recipeId}?userId=${userId}`,
+      `/api/v1/favourites/${recipeId}?userId=${userId}`,
       {
         method: "DELETE",
       }

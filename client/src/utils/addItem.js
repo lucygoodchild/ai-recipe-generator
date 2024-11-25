@@ -2,21 +2,18 @@ import { toast } from "react-toastify";
 
 export const addItem = async (item, collection, userId) => {
   try {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/items/${collection}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: item,
-          quantity: "",
-          measurement: "",
-          userId,
-        }),
-      }
-    );
+    const response = await fetch(`/api/v1/items/${collection}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: item,
+        quantity: "",
+        measurement: "",
+        userId,
+      }),
+    });
 
     if (!response.ok) {
       const errorData = await response.json();

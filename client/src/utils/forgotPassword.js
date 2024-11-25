@@ -1,20 +1,14 @@
 import { toast } from "react-toastify";
 
-const dotenv = require("dotenv");
-dotenv.config({ path: "./../.env.local" });
-
 export const forgotPassword = async (email) => {
   try {
-    const response = await fetch(
-      "http://127.0.0.1:8000/api/v1/users/forgot-password",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      }
-    );
+    const response = await fetch("/api/v1/users/forgot-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
 
     if (!response.ok) {
       const errorData = await response.json();

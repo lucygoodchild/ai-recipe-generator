@@ -2,19 +2,16 @@ import { toast } from "react-toastify";
 
 export const updateItem = async (itemId, quantity, measurement, userId) => {
   try {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/v1/items/${itemId}?userId=${userId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          quantity: quantity,
-          measurement: measurement,
-        }),
-      }
-    );
+    const response = await fetch(`/api/v1/items/${itemId}?userId=${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quantity: quantity,
+        measurement: measurement,
+      }),
+    });
 
     if (!response.ok) {
       throw new Error(`Error updating item: Status ${response.status}`);

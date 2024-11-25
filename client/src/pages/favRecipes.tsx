@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { fetchFavouriteRecipes } from "../../utils/fetchFavouriteRecipes";
+import { fetchFavouriteRecipes } from "../utils/fetchFavouriteRecipes";
 import { useFavouriteRecipes } from "../app/contexts/favRecipesContext";
-import { removeFavouriteRecipes } from "../../utils/removeFavouriteRecipes";
+import { removeFavouriteRecipes } from "../utils/removeFavouriteRecipes";
 import { FaHeart } from "react-icons/fa6";
 import IconButton from "../app/components/IconButton";
 import ToolTip from "../app/components/ToolTip";

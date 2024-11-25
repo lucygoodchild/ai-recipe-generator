@@ -1,5 +1,4 @@
 const express = require("express");
-const next = require("next");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");

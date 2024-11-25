@@ -1,11 +1,8 @@
 import { toast } from "react-toastify";
 
-const dotenv = require("dotenv");
-dotenv.config({ path: "./../.env.local" });
-
 export const registerUser = async (name, email, password, passwordConfirm) => {
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/v1/users/signup", {
+    const response = await fetch("/api/v1/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

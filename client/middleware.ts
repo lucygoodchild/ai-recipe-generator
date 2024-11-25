@@ -24,5 +24,5 @@ export function middleware(req: NextRequest) {
   }
   // Specify the paths where this middleware should run
   export const config = {
-  matcher: ['/account/:path*'], // Protect all routes under /account
+  matcher: ['/account/:path*', '/favRecipes/:path*'], // Protect all routes under
 };
