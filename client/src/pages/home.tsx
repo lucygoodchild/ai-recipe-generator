@@ -34,7 +34,7 @@ const Home = () => {
           setItems({ cupboardItems, fridgeItems, freezerItems });
         }
       } catch (err) {
-        setError(error);
+        setError(err);
         setIsModalOpen(false);
       } finally {
         setLoading(false);
@@ -46,7 +46,6 @@ const Home = () => {
     };
 
     if (isLoggedIn) {
-      //sync local storage with DB
       if (userId != null) {
         syncItemsWithDB();
         fetchAllItemsFromDB();
@@ -54,7 +53,7 @@ const Home = () => {
     } else {
       fetchAllItemsFromLocalStorage();
     }
-  }, [error, userId, isLoggedIn]);
+  }, [userId, isLoggedIn]);
 
   const fetchAllItemsFromLocalStorage = () => {
     const { cupboardItems, fridgeItems, freezerItems } =

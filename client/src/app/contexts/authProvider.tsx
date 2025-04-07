@@ -6,33 +6,39 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
 
-  // Check if user is logged in when the component mounts
   useEffect(() => {
-    checkIfLoggedIn();
+    console.log("Checking JWT token in cookies...");
+    const token = getJwtTokenFromCookies();
+    console.log("JWT token found:", token); // Debugging log
+    if (token) {
+      try {
+        const decodedToken: { id: string; exp: number } = jwtDecode(token);
+        console.log("Decoded JWT token:", decodedToken);
+
+        if (decodedToken.exp * 1000 > Date.now()) {
+          setIsLoggedIn(true);
+          setUserId(decodedToken.id);
+        } else {
+          console.warn("JWT token has expired");
+          logout();
+        }
+      } catch (error) {
+        console.error("Invalid JWT token:", error);
+        logout();
+      }
+    }
   }, []);
 
-  const checkIfLoggedIn = () => {
-    const token = document.cookie
+  const getJwtTokenFromCookies = () => {
+    const cookieString = document.cookie || "";
+    return cookieString
       .split("; ")
       .find((row) => row.startsWith("jwt="))
       ?.split("=")[1];
-
-    if (token) {
-      try {
-        const decodedToken: { userId: string } = jwtDecode(token);
-        setIsLoggedIn(true);
-        setUserId(decodedToken.userId);
-      } catch (error) {
-        console.error("Invalid JWT token:", error);
-      }
-    }
   };
 
   const logout = () => {
-    // Clear the JWT cookie
     document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-    // Set isLoggedIn to false
     setIsLoggedIn(false);
     setUserId(null);
   };

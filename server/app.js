@@ -10,6 +10,7 @@ const itemRouter = require("./routes/itemRoutes");
 const userRouter = require("./routes/userRoutes");
 const recipeRouter = require("./routes/recipeRoutes");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const corsOptions = {
   origin: "http://localhost:3000", //"*" for prod
@@ -18,6 +19,8 @@ const corsOptions = {
 };
 
 const app = express();
+
+app.use(cookieParser());
 
 app.use(cors(corsOptions));
 
