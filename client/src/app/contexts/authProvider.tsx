@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AuthContext } from "./authContext";
+import { jwtDecode } from "jwt-decode";
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -13,9 +14,17 @@ export const AuthProvider = ({ children }) => {
   const checkIfLoggedIn = () => {
     const token = document.cookie
       .split("; ")
-      .find((row) => row.startsWith("jwt"));
+      .find((row) => row.startsWith("jwt="))
+      ?.split("=")[1];
+
     if (token) {
-      setIsLoggedIn(true);
+      try {
+        const decodedToken: { userId: string } = jwtDecode(token);
+        setIsLoggedIn(true);
+        setUserId(decodedToken.userId);
+      } catch (error) {
+        console.error("Invalid JWT token:", error);
+      }
     }
   };
 

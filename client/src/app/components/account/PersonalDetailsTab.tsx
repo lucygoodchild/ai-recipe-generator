@@ -1,7 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./PersonalDetailsTab.css";
-import Input from "../Input";
-import Button from "../Button";
 import { AuthContext } from "../../contexts/authContext";
 import { fetchUsersPersonalDetails } from "./../../../utils/fetchPersonalDetails";
 import {
@@ -9,6 +6,9 @@ import {
   updateEmail,
 } from "./../../../utils/updatePersonalDetails";
 import LoadingSpinner from "../LoadingSpinner";
+import Input from "../Input";
+import Button from "../Button";
+import "./PersonalDetailsTab.css";
 
 const PersonalDetailsTab = () => {
   const { userId } = useContext(AuthContext);

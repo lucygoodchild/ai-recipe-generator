@@ -46,6 +46,8 @@ const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
       const fetchedRecipes = await fetchFavouriteRecipes();
       setFavRecipes(fetchedRecipes);
     };
+
+    console.log("isLoggedIn from recipes modal", isLoggedIn);
     if (isLoggedIn) {
       loadRecipes();
     }
