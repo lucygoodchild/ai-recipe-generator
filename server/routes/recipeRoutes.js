@@ -5,7 +5,7 @@ const authenticationController = require("../controllers/authenticationControlle
 const router = express.Router();
 
 router
-  .route("/favourite-recipes")
+  .route("/")
   .get(
     authenticationController.protect,
     recipeController.getUsersFavouriteRecipes

@@ -27,9 +27,12 @@ const Home = () => {
   useEffect(() => {
     const fetchAllItemsFromDB = async () => {
       try {
+        setLoading(true);
         const cupboardItems = await fetchItems("cupboard", userId);
         const fridgeItems = await fetchItems("fridge", userId);
         const freezerItems = await fetchItems("freezer", userId);
+
+        // Ensure all items are fetched successfully before updating state
         if (cupboardItems && fridgeItems && freezerItems) {
           setItems({ cupboardItems, fridgeItems, freezerItems });
         }
@@ -37,18 +40,21 @@ const Home = () => {
         setError(err);
         setIsModalOpen(false);
       } finally {
-        setLoading(false);
+        setLoading(false); // Ensure loading state is cleared
       }
     };
 
     const syncItemsWithDB = async () => {
-      await syncItemsFromLocalStorageWithDB(userId);
+      try {
+        await syncItemsFromLocalStorageWithDB(userId);
+      } catch (err) {
+        console.error("Error syncing items with Database:", err);
+      }
     };
 
     if (isLoggedIn) {
       if (userId != null) {
-        syncItemsWithDB();
-        fetchAllItemsFromDB();
+        syncItemsWithDB().then(fetchAllItemsFromDB);
       }
     } else {
       fetchAllItemsFromLocalStorage();
