@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { fetchFavouriteRecipes } from "../utils/fetchFavouriteRecipes";
 import { useFavouriteRecipes } from "../app/contexts/favRecipesContext";
 import { removeFavouriteRecipes } from "../utils/removeFavouriteRecipes";
+import { AuthContext } from "../app/contexts/authContext";
 import { FaHeart } from "react-icons/fa6";
 import IconButton from "../app/components/IconButton";
 import ToolTip from "../app/components/ToolTip";
@@ -23,10 +24,11 @@ const FavRecipes = () => {
   const [expandedRecipes, setExpandedRecipes] = useState<number[]>([]);
   const [removeRecipePopup, setRemoveRecipePopup] = useState(false);
   const [currentRecipe, setCurrentRecipe] = useState<Recipe>();
+  const { userId } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchFavRecipes = async () => {
-      const recipes = await fetchFavouriteRecipes();
+      const recipes = await fetchFavouriteRecipes(userId);
       setFavRecipes(recipes);
     };
     fetchFavRecipes();

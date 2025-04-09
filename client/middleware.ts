@@ -1,28 +1,30 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
 
-const secretKey = process.env.JWT_SECRET!;
-
-export function middleware(req: NextRequest) {
-  const { cookies } = req;
-  const token = cookies.get('jwt')?.value;
-  if (!token) {
-    const url = req.nextUrl.clone();
-    url.pathname = '/login';
-    return NextResponse.rewrite(url);
-  }
+export async function middleware(req: NextRequest) {
   try {
-  jwt.verify(token, secretKey);
-  // Token is valid, continue to the requested page
-  return NextResponse.next();
+    const response = await fetch(`${req.nextUrl.origin}/api/v1/users/check-auth`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      return NextResponse.next(); // User is authenticated
+    } else {
+      const url = req.nextUrl.clone();
+      url.pathname = '/login';
+      return NextResponse.rewrite(url); // Redirect to login
+    }
   } catch (err) {
     const url = req.nextUrl.clone();
     url.pathname = '/login';
-    return NextResponse.rewrite(url);
+    return NextResponse.rewrite(url); // Redirect to login on error
   }
-  }
-  // Specify the paths where this middleware should run
-  export const config = {
-  matcher: ['/account/:path*', '/favRecipes/:path*'], // Protect all routes under
+}
+
+export const config = {
+  matcher: ['/account/:path*', '/favRecipes/:path*'], // Protect specific routes
 };

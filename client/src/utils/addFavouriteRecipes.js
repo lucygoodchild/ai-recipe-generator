@@ -4,6 +4,7 @@ export const addFavouriteRecipes = async (recipe, userId) => {
   try {
     const response = await fetch(`/api/v1/favourite-recipes`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
