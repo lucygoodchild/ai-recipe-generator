@@ -21,5 +21,6 @@ router.delete(
 );
 router.route("/").get(userController.getAllUsers);
 router.route("/:id").get(userController.getPersonalDetailsOfUser);
+router.post("/check-auth", authenticationController.checkAuth);
 
 module.exports = router;
