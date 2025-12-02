@@ -10,17 +10,19 @@ import "./login.css";
 import "./account.css";
 import "react-toastify/dist/ReactToastify.css";
 
-const roboto = Nunito({
-  weight: "500",
-  style: "normal",
+const nunito = Nunito({
+  weight: ["300", "400", "500", "700"],
+  style: ["normal"],
   subsets: ["latin"],
+  display: "swap",
+  variable: "--font-nunito",
 });
 
 function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
       <FavouriteRecipesProvider>
-        <main className={roboto.className}>
+        <main className={`${nunito.variable} ${nunito.className}`}>
           <Header />
           <Component {...pageProps} />
         </main>
