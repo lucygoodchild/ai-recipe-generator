@@ -13,12 +13,19 @@ export async function middleware(req: NextRequest) {
 
     if (response.ok) {
       return NextResponse.next(); // User is authenticated
+    } else if (response.status === 429) {
+      // Handle rate-limiting response
+      console.error('Rate limit exceeded:', await response.text());
+      const url = req.nextUrl.clone();
+      url.pathname = '/rate-limit'; // Redirect to a rate-limit page
+      return NextResponse.rewrite(url);
     } else {
       const url = req.nextUrl.clone();
       url.pathname = '/login';
       return NextResponse.rewrite(url); // Redirect to login
     }
   } catch (err) {
+    console.error('Error during authentication check:', err);
     const url = req.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.rewrite(url); // Redirect to login on error

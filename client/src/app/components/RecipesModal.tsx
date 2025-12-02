@@ -24,6 +24,7 @@ interface RecipeModalProps {
 }
 
 const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
+  const { userId } = useContext(AuthContext);
   const [expandedRecipeIndex, setExpandedRecipeIndex] = useState<number | null>(
     null
   );
@@ -43,15 +44,14 @@ const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
   useEffect(() => {
     // Fetch all favourite recipes on component mount and set in global state
     const loadRecipes = async () => {
-      const fetchedRecipes = await fetchFavouriteRecipes();
+      const fetchedRecipes = await fetchFavouriteRecipes(userId);
       setFavRecipes(fetchedRecipes);
     };
 
-    console.log("isLoggedIn from recipes modal", isLoggedIn);
     if (isLoggedIn) {
       loadRecipes();
     }
-  }, [isLoggedIn, setFavRecipes]);
+  }, [isLoggedIn, userId]);
 
   if (!isOpen) {
     return null;
@@ -65,7 +65,7 @@ const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
     try {
       if (newAddToFavourites[index]) {
         // Add to favourites
-        const newRecipe = await addFavouriteRecipes(recipe);
+        const newRecipe = await addFavouriteRecipes(recipe, userId);
         // update global state with added recipe
         addFavRecipe(newRecipe);
       } else {
@@ -74,7 +74,10 @@ const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
           (selectedRecipe) => recipe.title !== selectedRecipe.title
         );
         // Remove from favourites
-        const removedSuccess = await removeFavouriteRecipes(chosenRecipe._id);
+        const removedSuccess = await removeFavouriteRecipes(
+          chosenRecipe._id,
+          userId
+        );
         // update global state
         if (removedSuccess) {
           removeFavRecipe(chosenRecipe._id);

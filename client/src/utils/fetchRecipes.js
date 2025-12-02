@@ -1,4 +1,9 @@
-export const fetchRecipes = async (itemObject, setRecipesOutput, setError) => {
+export const fetchRecipes = async (
+  itemObject,
+  setRecipesOutput,
+  setError,
+  favouriteRecipes
+) => {
   const items = [
     ...itemObject.cupboardItems.map((item) =>
       `${item.name} ${item.quantity}  ${item.measurement}`.trimEnd()
@@ -30,6 +35,14 @@ export const fetchRecipes = async (itemObject, setRecipesOutput, setError) => {
 
     // Check if data is an array and has the correct structure
     if (Array.isArray(dataToReturn[0])) {
+      // Filter out recipes that already exist in the user's favourites
+      /*const filteredRecipes = dataToReturn[0].filter(
+        (recipe) =>
+          !favouriteRecipes.some(
+            (favRecipe) => favRecipe.title === recipe.title
+          )
+      );*/
+
       setRecipesOutput(dataToReturn[0]);
     } else {
       console.error("Error: incorrect format of recipes.");

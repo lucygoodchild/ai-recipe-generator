@@ -3,16 +3,14 @@ import { toast } from "react-toastify";
 export const removeFavouriteRecipes = async (recipeId, userId) => {
   try {
     const response = await fetch(
-      `/api/v1/favourites/${recipeId}?userId=${userId}`,
+      `/api/v1/favourite-recipes/${recipeId}?userId=${userId}`,
       {
         method: "DELETE",
       }
     );
 
     if (!response.ok) {
-      throw new Error(
-        `Error removing recipe from favourites: Status ${response.status}`
-      );
+      throw new Error(`Error removing recipe from favourites`);
     }
 
     await response.json();

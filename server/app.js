@@ -36,8 +36,11 @@ if (process.env.NODE_ENV === "development") {
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
-  message:
-    "Too many requests from this IP address, please try again in an hour.",
+  message: JSON.stringify({
+    status: "fail",
+    message:
+      "Too many requests from this IP address, please try again in an hour.",
+  }),
 });
 app.use("/api", limiter);
 

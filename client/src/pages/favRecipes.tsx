@@ -21,18 +21,19 @@ interface Recipe {
 const FavRecipes = () => {
   const { setFavRecipes, removeFavRecipe, favouriteRecipes } =
     useFavouriteRecipes();
+  const { userId } = useContext(AuthContext);
   const [expandedRecipes, setExpandedRecipes] = useState<number[]>([]);
   const [removeRecipePopup, setRemoveRecipePopup] = useState(false);
   const [currentRecipe, setCurrentRecipe] = useState<Recipe>();
-  const { userId } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchFavRecipes = async () => {
+      console.log(userId);
       const recipes = await fetchFavouriteRecipes(userId);
       setFavRecipes(recipes);
     };
     fetchFavRecipes();
-  }, [setFavRecipes]);
+  }, [removeFavRecipe]);
 
   const toggleRecipe = (index: number) => {
     setExpandedRecipes((prevExpandedRecipes) =>

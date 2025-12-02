@@ -250,3 +250,23 @@ exports.checkAuth = catchAsync(async (req, res, next) => {
     return next(new AppError("Invalid token. Please log in again", 401));
   }
 });
+
+exports.logout = catchAsync(async (req, res, next) => {
+  try {
+    // Clear the cookie by setting its expiration date to a past date
+    res.cookie("jwt", "", {
+      expires: new Date(Date.now() + 1000),
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    //res.setHeader("Clear-Site-Data", '"cookies"');
+
+    res.status(200).json({
+      status: "success",
+      message: "User logged out successfully",
+    });
+  } catch (err) {
+    return next(new AppError("Error logging out. Please try again", 500));
+  }
+});
