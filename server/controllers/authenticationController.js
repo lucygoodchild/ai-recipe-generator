@@ -255,8 +255,6 @@ exports.logout = catchAsync(async (req, res, next) => {
       secure: process.env.NODE_ENV === "production",
     });
 
-    //res.setHeader("Clear-Site-Data", '"cookies"');
-
     res.status(200).json({
       status: "success",
       message: "User logged out successfully",

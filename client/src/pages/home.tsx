@@ -115,7 +115,7 @@ const Home = () => {
         errorText={error!}
         onClose={() => {
           setIsModalOpen(false);
-          setError(null);
+          setError("");
         }}
       ></Error>
     );
@@ -123,7 +123,7 @@ const Home = () => {
 
   return (
     <div className="app">
-      <h1> AI Recipe Generator</h1>
+      <h1> Recipe Generator</h1>
       <div className="button-wrapper">
         <Button
           onClick={handleGenerateRecipes}
