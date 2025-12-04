@@ -39,7 +39,7 @@ const FavRecipes = () => {
     setExpandedRecipes((prevExpandedRecipes) =>
       prevExpandedRecipes.includes(index)
         ? prevExpandedRecipes.filter((i) => i !== index)
-        : [...prevExpandedRecipes, index]
+        : [...prevExpandedRecipes, index],
     );
   };
 
@@ -57,7 +57,7 @@ const FavRecipes = () => {
   return (
     <div className="fav-recipes-page">
       <h1>Your Favourite Recipes</h1>
-      <p>Click on the recipe titles for more details</p>
+      <h4>Click on the recipe titles for more details</h4>
       <div className="recipes-container">
         {favouriteRecipes.length === 0 ? (
           <div className="no-recipes-message">
@@ -99,7 +99,7 @@ const FavRecipes = () => {
                     {recipe.instructions.map(
                       (instruction: string, i: number) => (
                         <li key={i}>{instruction}</li>
-                      )
+                      ),
                     )}
                   </ol>
                   <div className="removeFav-button"></div>

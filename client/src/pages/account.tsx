@@ -25,6 +25,7 @@ const Account = () => {
   return (
     <div className="account-page">
       <h1>Account Settings</h1>
+      <h4>Update your details below</h4>
       <div className="tabs-container">
         <div className="tabs">
           <button

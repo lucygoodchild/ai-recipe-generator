@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import Hamburger from "hamburger-react";
 import Dropdown from "react-dropdown";
+import router from "next/router";
 import "react-dropdown/style.css";
 import "./HamburgerMenu.css";
+import { AuthContext } from "../contexts/authContext";
 
 const HamburgerMenu = () => {
   const [isOpen, setOpen] = React.useState(false);
   const [showOnLeft, setShowOnLeft] = React.useState(false);
+  const { logout } = useContext(AuthContext);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   const options = [
@@ -15,8 +18,23 @@ const HamburgerMenu = () => {
     { value: "logout", label: "Logout" },
   ];
 
+  const paths = (option: any) => {
+    switch (option.value) {
+      case "favourites":
+        return router.push("/favRecipes");
+      case "account":
+        return router.push("/account");
+      case "logout":
+        logout();
+        return;
+      default:
+        return router.push("/home");
+    }
+  };
+
   const onChange = (option: any) => {
     console.log("Option selected:", option);
+    paths(option);
     // Close the hamburger menu after selection
     setOpen(false);
   };
