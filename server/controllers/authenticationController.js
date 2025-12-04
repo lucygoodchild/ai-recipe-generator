@@ -48,17 +48,12 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   // Verify token
-  const decoded = await jwt.verify(
-    token,
-    process.env.JWT_SECRET,
-    {}, // passing an empty options object to get to callback
-    (err, value) => {
-      if (err) {
-        return next(new AppError("Error in decoding token", 401));
-      }
-      return value;
-    }
-  );
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    return next(new AppError("Invalid token. Please log in again", 401));
+  }
 
   // Check if user still exists
   const currentUser = await User.findById(decoded.id);

@@ -4,7 +4,6 @@ const itemSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Item must have a name"],
-    unique: true,
     trim: true,
   },
   type: String,
@@ -21,6 +20,9 @@ const itemSchema = new mongoose.Schema({
     required: [true, "User much have an ID"],
   },
 });
+
+// Create compound index for efficient user-specific queries
+itemSchema.index({ userId: 1, name: 1 }, { unique: true });
 
 //Pre-validate middleware to check if the item already exists with userId?
 itemSchema.pre("validate", async function (next) {
