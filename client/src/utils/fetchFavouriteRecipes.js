@@ -9,12 +9,13 @@ export const fetchFavouriteRecipes = async (userId) => {
     });
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch favourite recipes: Status ${response.status}`
+        `Failed to fetch favourite recipes: Status ${response.status}`,
       );
     }
     let recipes = await response.json();
-    return recipes.data;
+    return Array.isArray(recipes.data) ? recipes.data : [];
   } catch (err) {
     console.error(err);
+    return [];
   }
 };

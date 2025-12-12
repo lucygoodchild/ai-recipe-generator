@@ -11,7 +11,7 @@ import Button from "../app/components/Button";
 import "./favRecipes.css";
 
 interface Recipe {
-  id: string;
+  _id: string;
   title: string;
   ingredients: [];
   instructions: [];
@@ -28,12 +28,11 @@ const FavRecipes = () => {
 
   useEffect(() => {
     const fetchFavRecipes = async () => {
-      console.log(userId);
       const recipes = await fetchFavouriteRecipes(userId);
       setFavRecipes(recipes);
     };
     fetchFavRecipes();
-  }, [removeFavRecipe]);
+  }, [userId]);
 
   const toggleRecipe = (index: number) => {
     setExpandedRecipes((prevExpandedRecipes) =>
@@ -43,12 +42,12 @@ const FavRecipes = () => {
     );
   };
 
-  const removeRecipe = async (id: string) => {
+  const removeRecipe = async (recipeId: string) => {
     setRemoveRecipePopup(true);
     // remove from DB
-    const removeRecipeResponse = await removeFavouriteRecipes(id);
+    const removeRecipeResponse = await removeFavouriteRecipes(recipeId, userId);
     if (removeRecipeResponse) {
-      removeFavRecipe(id);
+      removeFavRecipe(recipeId);
       //close popup
       setRemoveRecipePopup(false);
     }
@@ -65,7 +64,7 @@ const FavRecipes = () => {
           </div>
         ) : (
           favouriteRecipes.map((recipe: Recipe, index: number) => (
-            <div className="recipe-item" key={recipe.id}>
+            <div className="recipe-item" key={recipe._id}>
               <div className="recipe-title">
                 <h2
                   onClick={() => toggleRecipe(index)}
@@ -79,7 +78,7 @@ const FavRecipes = () => {
                     <IconButton
                       onClick={() => {
                         setCurrentRecipe(recipe);
-                        removeRecipe(recipe.id);
+                        setRemoveRecipePopup(true);
                       }}
                       children={<FaHeart />}
                     />
@@ -121,7 +120,10 @@ const FavRecipes = () => {
               <Button
                 text="Yes"
                 onClick={() => {
-                  if (currentRecipe) removeRecipe(currentRecipe.id);
+                  if (currentRecipe) {
+                    removeRecipe(currentRecipe._id);
+                  }
+                  setRemoveRecipePopup(false);
                 }}
               />
               <Button text="No" onClick={() => setRemoveRecipePopup(false)} />

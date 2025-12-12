@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
 import Hamburger from "hamburger-react";
-import Dropdown from "react-dropdown";
 import router from "next/router";
-import "react-dropdown/style.css";
 import "./HamburgerMenu.css";
 import { AuthContext } from "../contexts/authContext";
+import { FaHome, FaHeart, FaUser, FaSignOutAlt } from "react-icons/fa";
 
 const HamburgerMenu = () => {
   const [isOpen, setOpen] = React.useState(false);
@@ -12,41 +11,78 @@ const HamburgerMenu = () => {
   const { logout } = useContext(AuthContext);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
-  const options = [
-    { value: "favourites", label: "Favourites" },
-    { value: "account", label: "Account" },
-    { value: "logout", label: "Logout" },
+  const menuItems = [
+    {
+      id: "home",
+      label: "Home",
+      icon: <FaHome />,
+      action: () => router.push("/home"),
+    },
+    {
+      id: "favourites",
+      label: "Favourites",
+      icon: <FaHeart />,
+      action: () => router.push("/favRecipes"),
+    },
+    {
+      id: "account",
+      label: "Account",
+      icon: <FaUser />,
+      action: () => router.push("/account"),
+    },
+    {
+      id: "logout",
+      label: "Logout",
+      icon: <FaSignOutAlt />,
+      action: () => logout(),
+    },
   ];
 
-  const paths = (option: any) => {
-    switch (option.value) {
-      case "favourites":
-        return router.push("/favRecipes");
-      case "account":
-        return router.push("/account");
-      case "logout":
-        logout();
-        return;
-      default:
-        return router.push("/home");
-    }
-  };
-
-  const onChange = (option: any) => {
-    console.log("Option selected:", option);
-    paths(option);
+  const handleMenuItemClick = (item: any) => {
+    console.log("Menu item selected:", item.label);
+    item.action();
     // Close the hamburger menu after selection
     setOpen(false);
   };
 
   React.useEffect(() => {
     if (isOpen && wrapperRef.current) {
+      const isMobile = window.innerWidth <= 769;
       const rect = wrapperRef.current.getBoundingClientRect();
-      const dropdownWidth = 180; // min-width of dropdown
-      const spaceOnRight = window.innerWidth - rect.right;
 
-      // If there's not enough space on the right, show on left
-      setShowOnLeft(spaceOnRight < dropdownWidth + 16);
+      if (isMobile) {
+        const topPosition = rect.bottom + 8;
+        document.documentElement.style.setProperty(
+          "--menu-top-position",
+          `${topPosition}px`,
+        );
+        setShowOnLeft(false);
+      } else {
+        const menuWidth = 120;
+        const spaceOnRight = window.innerWidth - rect.left;
+        setShowOnLeft(spaceOnRight < menuWidth + 16);
+      }
+    }
+  }, [isOpen]);
+
+  // Close menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("touchstart", handleClickOutside);
+      };
     }
   }, [isOpen]);
 
@@ -63,13 +99,19 @@ const HamburgerMenu = () => {
       </div>
 
       {isOpen && (
-        <div className={`dropdown-container ${showOnLeft ? "show-left" : ""}`}>
-          <Dropdown
-            className="hamburger-dropdown"
-            options={options}
-            onChange={onChange}
-            placeholder="Go to..."
-          />
+        <div className={`menu-column ${showOnLeft ? "show-left" : ""}`}>
+          <div className="menu-tabs">
+            {menuItems.map((item) => (
+              <div
+                key={item.id}
+                className="menu-tab"
+                onClick={() => handleMenuItemClick(item)}
+              >
+                <div className="menu-tab-icon">{item.icon}</div>
+                <span className="menu-tab-label">{item.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

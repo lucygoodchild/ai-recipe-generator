@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, type ReactNode } from "reac
 
 // Type definitions
 export interface Recipe {
-  id: string;
+  _id: string;
   title: string;
   description?: string;
   image?: string;
@@ -47,9 +47,9 @@ export const FavouriteRecipesProvider: React.FC<FavouriteRecipesProviderProps> =
       }
 
       // Check if recipe already exists to prevent duplicates
-      const recipeExists = prevRecipes.some(existingRecipe => existingRecipe.id === recipe.id);
+      const recipeExists = prevRecipes.some(existingRecipe => existingRecipe._id === recipe._id);
       if (recipeExists) {
-        console.warn(`Recipe with id ${recipe.id} is already in favourites`);
+        console.warn(`Recipe with id ${recipe._id} is already in favourites`);
         return prevRecipes;
       }
 
@@ -64,7 +64,7 @@ export const FavouriteRecipesProvider: React.FC<FavouriteRecipesProviderProps> =
         console.error("prevRecipes is not an array:", prevRecipes);
         return [];
       }
-      return prevRecipes.filter((recipe) => recipe.id !== id);
+      return prevRecipes.filter((recipe) => recipe._id !== id);
     });
   };
 
@@ -79,7 +79,7 @@ export const FavouriteRecipesProvider: React.FC<FavouriteRecipesProviderProps> =
 
   // Helper function to check if a recipe is favourited
   const isRecipeFavourite = (id: string): boolean => {
-    return favouriteRecipes.some(recipe => recipe.id === id);
+    return favouriteRecipes.some(recipe => recipe._id === id);
   };
 
   // Get the count of favourite recipes
