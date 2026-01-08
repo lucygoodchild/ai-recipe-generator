@@ -30,32 +30,41 @@ const Home = () => {
         setLoading(true);
         setError(""); // Clear any previous errors
 
-        const [cupboardItems, fridgeItems, freezerItems] = await Promise.allSettled([
-          fetchItems("cupboard", userId),
-          fetchItems("fridge", userId),
-          fetchItems("freezer", userId)
-        ]);
+        const [cupboardItems, fridgeItems, freezerItems] =
+          await Promise.allSettled([
+            fetchItems("cupboard", userId),
+            fetchItems("fridge", userId),
+            fetchItems("freezer", userId),
+          ]);
 
         // Extract successful results, use empty array for failed ones
         const itemsData = {
-          cupboardItems: cupboardItems.status === 'fulfilled' ? cupboardItems.value || [] : [],
-          fridgeItems: fridgeItems.status === 'fulfilled' ? fridgeItems.value || [] : [],
-          freezerItems: freezerItems.status === 'fulfilled' ? freezerItems.value || [] : []
+          cupboardItems:
+            cupboardItems.status === "fulfilled"
+              ? cupboardItems.value || []
+              : [],
+          fridgeItems:
+            fridgeItems.status === "fulfilled" ? fridgeItems.value || [] : [],
+          freezerItems:
+            freezerItems.status === "fulfilled" ? freezerItems.value || [] : [],
         };
 
         setItems(itemsData);
 
         // Check for any failures and warn user
-        const failedFetches = [cupboardItems, fridgeItems, freezerItems]
-          .filter(result => result.status === 'rejected');
+        const failedFetches = [cupboardItems, fridgeItems, freezerItems].filter(
+          (result) => result.status === "rejected",
+        );
 
         if (failedFetches.length > 0) {
-          console.warn('Some items could not be loaded from server');
-          setError('Some items could not be loaded. Please refresh to try again.');
+          console.warn("Some items could not be loaded from server");
+          setError(
+            "Some items could not be loaded. Please refresh to try again.",
+          );
         }
       } catch (err) {
-        console.error('Error fetching items from database:', err);
-        setError('Failed to load items from server');
+        console.error("Error fetching items from database:", err);
+        setError("Failed to load items from server");
         // Fall back to local storage
         fetchAllItemsFromLocalStorage();
       } finally {

@@ -12,6 +12,7 @@ import ToolTip from "./ToolTip";
 import "./RecipesModal.css";
 
 interface Recipe {
+  _id?: string;
   title: string;
   ingredients: string[];
   instructions: string[];
@@ -26,16 +27,16 @@ interface RecipeModalProps {
 const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
   const { userId } = useContext(AuthContext);
   const [expandedRecipeIndex, setExpandedRecipeIndex] = useState<number | null>(
-    null
+    null,
   );
   const [onMouseOver, setOnMouseOver] = useState(
-    new Array(recipes.length).fill(false)
+    new Array(recipes.length).fill(false),
   );
   const toggleRecipe = (index: number) => {
     setExpandedRecipeIndex(expandedRecipeIndex === index ? null : index);
   };
   const [addToFavourites, setAddToFavourites] = useState(
-    new Array(recipes.length).fill(false)
+    new Array(recipes.length).fill(false),
   );
   const { setFavRecipes, addFavRecipe, removeFavRecipe, favouriteRecipes } =
     useFavouriteRecipes();
@@ -69,18 +70,20 @@ const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
         // update global state with added recipe
         addFavRecipe(newRecipe);
       } else {
-        // filter out recipe from fav recipes array (using title as there cannot be duplicates)
-        const chosenRecipe = favouriteRecipes.filter(
-          (selectedRecipe) => recipe.title !== selectedRecipe.title
+        // find the recipe in fav recipes array (using title as there cannot be duplicates)
+        const chosenRecipe = favouriteRecipes.find(
+          (selectedRecipe) => recipe.title === selectedRecipe.title,
         );
         // Remove from favourites
-        const removedSuccess = await removeFavouriteRecipes(
-          chosenRecipe._id,
-          userId
-        );
-        // update global state
-        if (removedSuccess) {
-          removeFavRecipe(chosenRecipe._id);
+        if (chosenRecipe) {
+          const removedSuccess = await removeFavouriteRecipes(
+            chosenRecipe._id,
+            userId,
+          );
+          // update global state
+          if (removedSuccess) {
+            removeFavRecipe(chosenRecipe._id);
+          }
         }
       }
 

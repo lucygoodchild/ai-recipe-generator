@@ -9,13 +9,15 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  box-shadow:
+    0 0 20px 0 rgba(0, 0, 0, 0.2),
+    0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
 .modal-content {
   position: relative;
   background-color: #fff;
-  padding: 20px;
+  padding: 50px;
   border-radius: 8px;
   max-width: 600px;
   width: 90%;
@@ -30,13 +32,15 @@
 
 .recipe-item {
   display: flex;
-  flex-wrap: column;
+  flex-direction: column;
   border-bottom: 1px solid #ddd;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .recipe-title {
   cursor: pointer;
-  color:  #a360b2;
+  color: #a360b2;
   padding-right: 5px;
   height: fit-content;
 }
@@ -46,7 +50,8 @@
 }
 
 .recipe-details {
-  padding-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .close-button {
@@ -59,7 +64,7 @@
   display: flex;
   align-items: center;
   font-size: 20px;
-  float: right
+  float: right;
 }
 
 .close-button:hover {
@@ -71,7 +76,7 @@
   text-align: center;
 }
 
-.recipe-text{
+.recipe-text {
   margin-top: -15px;
   padding-bottom: 20px;
   border-bottom: 0.5px solid #ddd;
@@ -79,8 +84,22 @@
   text-align: center;
 }
 
-ol li{
+.recipe-details ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.recipe-details ol {
   list-style: none;
+  padding-left: 0;
+  margin: 10px 0;
+}
+
+.recipe-details ul li,
+.recipe-details ol li {
+  margin-bottom: 5px;
+  line-height: 1.4;
 }
 
 .title-icon-details {
@@ -91,4 +110,6 @@ ol li{
 .title-and-icon {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
