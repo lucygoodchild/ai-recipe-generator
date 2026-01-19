@@ -1,0 +1,232 @@
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Close Button */
+.modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #666;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+  color: #333;
+}
+
+/* Modal Header */
+.modal-title {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 24px;
+}
+
+.modal-description {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 24px;
+  margin-top: 0;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+/* Form Inputs */
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #a360b2;
+}
+
+.form-select {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #a360b2;
+}
+
+/* Quantity Container */
+.quantity-container {
+  display: flex;
+  gap: 12px;
+}
+
+.quantity-input {
+  flex: 1;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel {
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #333;
+}
+
+.btn-cancel:hover {
+  background-color: #f5f5f5;
+}
+
+.btn-submit {
+  border: none;
+  background-color: #a360b2;
+  color: white;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #a360b2;
+}
+
+.btn-submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Demo Styles (for the preview) */
+.demo-container {
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.demo-title {
+  margin-bottom: 24px;
+}
+
+.demo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.demo-list-item {
+  padding: 12px;
+  margin-bottom: 8px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.demo-item-quantity {
+  margin-left: 8px;
+  color: #666;
+}
+
+.demo-delete-btn {
+  background: none;
+  border: none;
+  color: #d32f2f;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 4px 8px;
+  transition: color 0.2s;
+}
+
+.demo-delete-btn:hover {
+  color: #b71c1c;
+}
+
+.demo-add-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 16px;
+  background-color: #a360b2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.demo-add-btn:hover {
+  background-color: #a360b2;
+}
+
+.demo-add-icon {
+  font-size: 24px;
+}

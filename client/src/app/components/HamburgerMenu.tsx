@@ -39,7 +39,6 @@ const HamburgerMenu = () => {
   ];
 
   const handleMenuItemClick = (item: any) => {
-    console.log("Menu item selected:", item.label);
     item.action();
     // Close the hamburger menu after selection
     setOpen(false);

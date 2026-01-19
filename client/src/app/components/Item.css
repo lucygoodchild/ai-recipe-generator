@@ -1,35 +1,146 @@
-.item-name{
-    padding-left: 10px;
-    margin: 0;
-    color: rgb(255, 255, 255);
-    font-size: 16px;
-    text-align: center;
-    margin-left: 15px;
+.item-name {
+  margin: 0;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  transition: color 0.2s ease;
 }
 
-.text-container,
+.item-quantity {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  margin-left: 12px;
+  padding: 3px 10px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 16px;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.text-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  padding-left: 16px;
+  min-width: 0; /* Allow text truncation */
+}
+
 .button-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
+  gap: 0px;
+  padding-right: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .item-container {
-    padding: 2px; 
-    margin-bottom: 10px; 
-    border-radius: 15px;
-    box-shadow: 2px 2px 2px 2px rgba(0.1, 0, 0, 0.1);
-    box-sizing: border-box;
+  padding: 10px 8px;
+  margin-bottom: 0;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: visible;
+}
+
+.item-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.item-container:hover::before {
+  transform: translateX(100%);
+}
+
+.item-container:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.item-container:hover .item-name {
+  color: rgb(255, 255, 255);
 }
 
 .title-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.item-container button {
+  opacity: 0.7;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.item-container:hover button {
+  opacity: 1;
+}
+
+.item-container button:hover {
+  transform: scale(1.1);
+}
+
+.button-container > div {
+  /* Targeting ToolTip wrapper divs */
+  position: relative;
+  z-index: 10; /* High z-index for tooltip containers */
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .text-container {
+    padding-left: 12px;
   }
 
+  .item-quantity {
+    font-size: 12px;
+    padding: 2px 8px;
+  }
 
-
-
-
-
+  .button-container {
+    padding-right: 6px; /* Slightly less padding on mobile */
+  }
+}
