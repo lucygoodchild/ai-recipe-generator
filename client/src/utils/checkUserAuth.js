@@ -1,11 +1,10 @@
 export const checkUserAuth = async () => {
   try {
-
     const response = await fetch("/api/v1/users/check-auth", {
       method: "POST",
       credentials: "include",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     });
 

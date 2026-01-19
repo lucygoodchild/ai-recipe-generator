@@ -15,8 +15,6 @@ export const logoutUser = async () => {
       throw new Error(errorData.message || "Logout failed");
     }
 
-    toast.success("Logged out successfully!");
-
     return;
   } catch (err) {
     console.error(err);

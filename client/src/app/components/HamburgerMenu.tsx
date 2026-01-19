@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import Hamburger from "hamburger-react";
 import router from "next/router";
-import "./HamburgerMenu.css";
+import Hamburger from "hamburger-react";
 import { AuthContext } from "../contexts/authContext";
 import { FaHome, FaHeart, FaUser, FaSignOutAlt } from "react-icons/fa";
+import "./HamburgerMenu.css";
 
 const HamburgerMenu = () => {
   const [isOpen, setOpen] = React.useState(false);

@@ -9,7 +9,6 @@ import ErrorBoundary from "../app/components/ErrorBoundary";
 import "./../styles/global.css";
 import "./register.css";
 import "./login.css";
-import "./account.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const nunito = Nunito({
@@ -31,7 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </main>
           <ToastContainer
             position="top-center"
-            autoClose={5000}
+            autoClose={2000}
             hideProgressBar
             newestOnTop
             closeOnClick
