@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../contexts/authContext";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/authContext";
 import { fetchUsersPersonalDetails } from "./../../../utils/fetchPersonalDetails";
 import {
   updateName,
@@ -11,7 +11,7 @@ import Button from "../Button";
 import "./PersonalDetailsTab.css";
 
 const PersonalDetailsTab = () => {
-  const { userId } = useContext(AuthContext);
+  const { userId } = useAuth();
   const [loading, setLoading] = useState(false);
   const [personalDetails, setPersonalDetails] = useState({
     name: "name",

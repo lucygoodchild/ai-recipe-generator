@@ -1,12 +1,10 @@
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../../contexts/authContext";
+import React, { useState } from "react";
 import Input from "../Input";
 import Button from "../Button";
 import LoadingSpinner from "../LoadingSpinner";
 import "./ChangePasswordTab.css";
 
 const ChangePasswordTab = () => {
-  const { userId } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
   if (loading) return <LoadingSpinner />;

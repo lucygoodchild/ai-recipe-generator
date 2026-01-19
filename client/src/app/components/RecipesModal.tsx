@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addFavouriteRecipes } from "./../../utils/addFavouriteRecipes";
 import { fetchFavouriteRecipes } from "./../../utils/fetchFavouriteRecipes";
 import { removeFavouriteRecipes } from "./../../utils/removeFavouriteRecipes";
 import { useFavouriteRecipes } from "../contexts/favRecipesContext";
-import { AuthContext } from "../contexts/authContext";
+import { useAuth } from "../contexts/authContext";
 import { IoMdClose } from "react-icons/io";
 import { FaRegHeart } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa6";
@@ -25,7 +25,7 @@ interface RecipeModalProps {
 }
 
 const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
-  const { userId } = useContext(AuthContext);
+  const { isLoggedIn, userId } = useAuth();
   const [expandedRecipeIndex, setExpandedRecipeIndex] = useState<number | null>(
     null,
   );
@@ -40,7 +40,6 @@ const RecipeModal = ({ isOpen, recipes, onClose }: RecipeModalProps) => {
   );
   const { setFavRecipes, addFavRecipe, removeFavRecipe, favouriteRecipes } =
     useFavouriteRecipes();
-  const { isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
     // Fetch all favourite recipes on component mount and set in global state

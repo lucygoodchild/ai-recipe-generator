@@ -1,11 +1,9 @@
-// app/components/ProtectedRoute.tsx
-import { useEffect, useContext, useState } from "react";
-import { useRouter } from "next/router";
-import { AuthContext } from "../contexts/authContext";
+import { useEffect, useState } from "react";
 import LoadingSpinner from "./LoadingSpinner";
+import { useAuth } from "../contexts/authContext";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn } = useAuth();
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {

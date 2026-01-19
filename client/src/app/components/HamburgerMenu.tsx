@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import router from "next/router";
 import Hamburger from "hamburger-react";
-import { AuthContext } from "../contexts/authContext";
+import { useAuth } from "../contexts/authContext";
 import { FaHome, FaHeart, FaUser, FaSignOutAlt } from "react-icons/fa";
 import "./HamburgerMenu.css";
 
 const HamburgerMenu = () => {
   const [isOpen, setOpen] = React.useState(false);
   const [showOnLeft, setShowOnLeft] = React.useState(false);
-  const { logout } = useContext(AuthContext);
+  const { logout } = useAuth();
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   const menuItems = [

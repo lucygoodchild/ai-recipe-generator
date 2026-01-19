@@ -1,10 +1,10 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useState } from "react";
 import { CgAdd } from "react-icons/cg";
 import { MdPlaylistAdd } from "react-icons/md";
 import { addItem } from "../../utils/addItem";
 import { deleteItem } from "../../utils/deleteItem";
 import { updateItem } from "../../utils/updateItem";
-import { AuthContext } from "../contexts/authContext";
+import { useAuth } from "../contexts/authContext";
 import {
   addItemToLocalStorage,
   deleteItemFromLocalStorage,
@@ -36,7 +36,7 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
     quantity: string;
     measurement: string;
   } | null>(null);
-  const { isLoggedIn, userId } = useContext(AuthContext);
+  const { isLoggedIn, userId } = useAuth();
 
   const handleAddItem = async (itemData: {
     name: string;

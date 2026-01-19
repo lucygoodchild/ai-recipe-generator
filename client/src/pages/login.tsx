@@ -1,8 +1,8 @@
 import React from "react";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { loginUser } from "../utils/loginUser";
-import { AuthContext } from "../app/contexts/authContext";
+import { useAuth } from "../app/contexts/authContext";
 import LoginModal from "../app/components/LoginModal";
 import LoadingSpinner from "../app/components/LoadingSpinner";
 import "./login.css";
@@ -14,7 +14,7 @@ const LoginPage = () => {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const { isLoggedIn, setIsLoggedIn, setUserId } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, setUserId } = useAuth();
   const router = useRouter();
 
   useEffect(() => {

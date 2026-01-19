@@ -4,8 +4,8 @@ import { IoIosArrowDown } from "react-icons/io";
 import PersonalDetailsTab from "../app/components/account/PersonalDetailsTab";
 import ChangePasswordTab from "../app/components/account/ChangePasswordTab";
 import DeleteAccountTab from "../app/components/account/DeleteAccountTab";
-import "./account.css";
 import { ProtectedRoute } from "../app/components/ProtectedRoute";
+import "./account.css";
 
 const Account = () => {
   const [activeTab, setActiveTab] = useState("personal-details");

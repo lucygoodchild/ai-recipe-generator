@@ -1,12 +1,11 @@
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../../contexts/authContext";
+import React, { useState } from "react";
+import { useAuth } from "../../contexts/authContext";
 import Input from "../Input";
 import Button from "../Button";
 import LoadingSpinner from "../LoadingSpinner";
 import "./DeleteAccountTab.css";
 
 const DeleteAccountTab = () => {
-  const { userId } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
   if (loading) return <LoadingSpinner />;

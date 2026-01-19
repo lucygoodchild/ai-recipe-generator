@@ -8,15 +8,14 @@ export const checkUserAuth = async () => {
       },
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to check authentication");
+    if (response.ok) {
+      const data = await response.json();
+      return data;
     }
 
-    const data = await response.json();
-    return { isLoggedIn: true, user: data.data.user };
-  } catch (err) {
-    console.error(err);
-    return { isLoggedIn: false, error: err.message };
+    return null;
+  } catch (error) {
+    console.error("Failed to check auth:", error);
+    return null;
   }
 };
