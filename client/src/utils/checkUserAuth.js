@@ -10,7 +10,15 @@ export const checkUserAuth = async () => {
 
     if (response.ok) {
       const data = await response.json();
-      return data;
+      const userId = data.data?.user?._id || null;
+
+      if (userId) {
+        return {
+          userId: userId,
+          isAuthenticated: true,
+          user: data.data.user,
+        };
+      }
     }
 
     return null;
