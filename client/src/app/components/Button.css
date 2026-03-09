@@ -1,44 +1,83 @@
 .button-container {
-    padding: 2px;
+  padding: 2px;
 }
 
 .button {
-    background-color: #8e73a8;
-    color: white;
-    padding-right: 20px;
-    padding-left: 20px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 10px;
-    transition: background-color 0.3s ease;
-  }
+  background-color: #8e73a8;
+  color: white;
+  padding-right: 20px;
+  padding-left: 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: background-color 0.3s ease;
+}
 
-  .default-color {
-    background-color: #a360b2;
-  }
-  
-  .purple {
-    background-color: #aa7bcc;
-  }
+.default-color {
+  background-color: #a360b2;
+}
 
-  .yellow {
-    background-color: rgb(246, 235, 13);
-  }
+.purple {
+  background-color: #aa7bcc;
+}
 
-  .blue {
-    background-color: #76bcc1;;
-  }
-  
-  .button:hover {
-    filter: brightness(85%);
-  }
-  
-  .button:focus {
-    outline: solid;
-  }
+.yellow {
+  background-color: rgb(246, 235, 13);
+}
 
-  .form button:disabled {
-    filter: brightness(85%);
-    cursor: not-allowed; 
+.blue {
+  background-color: #76bcc1;
+}
+
+.button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  filter: brightness(85%);
+}
+.button:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button:focus {
+  outline: 3px solid #7b3ff2;
+  outline-offset: 2px;
+}
+
+.form button:disabled {
+  filter: brightness(85%);
+  cursor: not-allowed;
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Pulse animation for the button */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(123, 63, 242, 0.4);
   }
+  70% {
+    box-shadow: 0 0 0 10px rgba(123, 63, 242, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(123, 63, 242, 0);
+  }
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.6s,
+    height 0.6s;
+}

@@ -138,12 +138,14 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
   return (
     <div className="item-list-container">
       {itemList.length === 0 && (
-        <div className="empty-state">
-          <div className="empty-state-icon">
+        <div className="empty-item-state">
+          <div className="empty-item-state-icon">
             <MdPlaylistAdd />
           </div>
-          <p className="empty-state-text">No items yet</p>
-          <p className="empty-state-hint">Click below to add your first item</p>
+          <p className="empty-item-state-text">No items yet</p>
+          <p className="empty-item-state-hint">
+            Click below to add your first item
+          </p>
         </div>
       )}
 

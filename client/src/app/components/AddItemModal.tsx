@@ -55,9 +55,20 @@ const AddItemModal = ({
     }
   }, [editingItem]);
 
+  // Validation function to check if both quantity and measurement are provided together
+  const isValidQuantityMeasurement = () => {
+    const hasQuantity = quantity.trim() !== "";
+    const hasMeasurement = measurement !== "";
+
+    // Both must be provided or both must be empty
+    return (hasQuantity && hasMeasurement) || (!hasQuantity && !hasMeasurement);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (itemName.trim()) {
+
+    // Check if item name exists and quantity/measurement validation passes
+    if (itemName.trim() && isValidQuantityMeasurement()) {
       onAddItem({
         name: itemName.toLowerCase().trim(),
         quantity,
@@ -111,7 +122,9 @@ const AddItemModal = ({
           </div>
 
           <div className="form-group">
-            <label className="form-label">Quantity (Optional)</label>
+            <label className="form-label">
+              Quantity (Optional - both quantity and measurement required)
+            </label>
             <div className="quantity-container">
               <input
                 type="number"
@@ -142,7 +155,7 @@ const AddItemModal = ({
             <button
               className="btn btn-submit"
               onClick={handleSubmit}
-              disabled={!itemName.trim()}
+              disabled={!itemName.trim() || !isValidQuantityMeasurement()}
             >
               {editingItem ? "Update Item" : "Add Item"}
             </button>

@@ -60,24 +60,24 @@ form {
 }
 
 /* Empty state styling */
-.empty-state {
+.empty-item-state {
   text-align: center;
   padding: 40px 20px;
   color: rgba(255, 255, 255, 0.6);
 }
 
-.empty-state-icon {
+.empty-item-state-icon {
   font-size: 48px;
   margin-bottom: 16px;
   opacity: 0.4;
 }
 
-.empty-state-text {
+.empty-item-state-text {
   font-size: 16px;
   margin-bottom: 8px;
 }
 
-.empty-state-hint {
+.empty-item-state-hint {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.4);
 }
