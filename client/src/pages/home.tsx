@@ -132,7 +132,13 @@ const Home = () => {
 
   return (
     <div className="app">
-      <h1> Recipe Generator</h1>
+      <div className="title-header">
+        <h1> AI Recipe Generator</h1>
+        <h4>
+          {" "}
+          Input your ingredients and we'll suggest some recipes for you!{" "}
+        </h4>
+      </div>
       <div className="button-wrapper">
         <Button
           onClick={handleGenerateRecipes}

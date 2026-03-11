@@ -39,7 +39,9 @@ const ChangePasswordTab = () => {
           type="password"
           autoComplete="new-password"
         ></Input>
-        <Button onClick={() => {}} text="update password"></Button>
+        <div className="update-password-button-wrapper">
+          <Button onClick={() => {}} text="update password"></Button>
+        </div>
       </div>
     </div>
   );

@@ -39,6 +39,19 @@ export const FavouriteRecipesProvider: React.FC<FavouriteRecipesProviderProps> =
 
   // Function to add a recipe
   const addFavRecipe = (recipe: Recipe): void => {
+    if (!recipe) {
+      console.error("Cannot add favourite recipe: recipe is null or undefined");
+      return;
+    }
+
+    if (!recipe._id) {
+      console.error(
+        "Cannot add favourite recipe: recipe._id is missing",
+        recipe,
+      );
+      return;
+    }
+
     setFavoriteRecipes((prevRecipes) => {
       // Ensure prevRecipes is always an array
       if (!Array.isArray(prevRecipes)) {
@@ -47,7 +60,13 @@ export const FavouriteRecipesProvider: React.FC<FavouriteRecipesProviderProps> =
       }
 
       // Check if recipe already exists to prevent duplicates
-      const recipeExists = prevRecipes.some(existingRecipe => existingRecipe._id === recipe._id);
+      const recipeExists = prevRecipes.some(
+        (existingRecipe) =>
+          existingRecipe &&
+          existingRecipe._id &&
+          existingRecipe._id === recipe._id,
+      );
+
       if (recipeExists) {
         console.warn(`Recipe with id ${recipe._id} is already in favourites`);
         return prevRecipes;
@@ -59,6 +78,11 @@ export const FavouriteRecipesProvider: React.FC<FavouriteRecipesProviderProps> =
 
   // Function to remove a recipe by ID
   const removeFavRecipe = (id: string): void => {
+    if (!id) {
+      console.error("Cannot remove favourite recipe: id is null or undefined");
+      return;
+    }
+
     setFavoriteRecipes((prevRecipes) => {
       if (!Array.isArray(prevRecipes)) {
         console.error("prevRecipes is not an array:", prevRecipes);
@@ -74,12 +98,21 @@ export const FavouriteRecipesProvider: React.FC<FavouriteRecipesProviderProps> =
       console.error("setFavRecipes expects an array:", recipes);
       return;
     }
-    setFavoriteRecipes(recipes);
+    const validRecipes = recipes.filter((recipe) => recipe && recipe._id);
+    if (validRecipes.length !== recipes.length) {
+      console.warn(
+        "Some recipes were filtered out due to missing _id property",
+      );
+    }
+    setFavoriteRecipes(validRecipes);
   };
 
   // Helper function to check if a recipe is favourited
   const isRecipeFavourite = (id: string): boolean => {
-    return favouriteRecipes.some(recipe => recipe._id === id);
+    if (!id) {
+      return false;
+    }
+    return favouriteRecipes.some((recipe) => recipe && recipe._id === id);
   };
 
   // Get the count of favourite recipes
@@ -107,7 +140,7 @@ export const useFavouriteRecipes = (): FavouriteRecipesContextType => {
 
   if (context === undefined) {
     throw new Error(
-      "useFavouriteRecipes must be used within a FavouriteRecipesProvider"
+      "useFavouriteRecipes must be used within a FavouriteRecipesProvider",
     );
   }
 

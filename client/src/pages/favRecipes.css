@@ -115,6 +115,7 @@
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   border-bottom: 1px solid #e9ecef;
   transition: background 0.3s ease;
+  border-radius: 12px;
 }
 
 .recipe-header:hover {
@@ -234,7 +235,6 @@
   width: 100%;
 }
 
-/* Ingredients List */
 .ingredients-list {
   list-style: none;
   padding: 0;
@@ -295,14 +295,12 @@
 }
 
 .remove-popup {
-  padding: 2rem;
   text-align: center;
   max-width: 100%;
   margin: 0 auto;
 }
 
-.remove-popup h3 {
-  color: #2c3e50;
+.remove-popup h4 {
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
   font-weight: 600;
@@ -327,47 +325,6 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.popup-actions button,
-.remove-popup button {
-  min-width: 100px;
-  padding: 0.5rem 1.25rem;
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  background-color: #e9ecef;
-  color: #495057;
-}
-
-.popup-actions button:first-child,
-.remove-popup button:first-child {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.popup-actions button:first-child:hover,
-.remove-popup button:first-child:hover {
-  background-color: #c0392b;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
-}
-
-.popup-actions button:last-child,
-.remove-popup button:last-child {
-  background-color: #e9ecef;
-  color: #495057;
-}
-
-.popup-actions button:last-child:hover,
-.remove-popup button:last-child:hover {
-  background-color: #dee2e6;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive Design */

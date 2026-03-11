@@ -74,21 +74,29 @@
   flex-direction: column;
   flex: 1;
   padding: 20px;
-  gap: 40px;
+  gap: 30px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
   .compartment-container {
-    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
   }
 
-  .compartment {
-    flex: none;
-    height: auto;
+  .first-wrapper {
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .second-third-wrapper {
+    gap: 30px;
+    padding: 10px;
   }
 
   .second-compartment,
   .third-compartment {
-    margin-top: 10px;
+    margin-top: 0;
   }
 }
+

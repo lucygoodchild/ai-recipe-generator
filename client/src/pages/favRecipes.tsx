@@ -156,7 +156,7 @@ const FavRecipes = () => {
           isOpen={removeRecipePopup}
           children={
             <div className="remove-popup">
-              <h3>Remove Recipe</h3>
+              <h4>Remove Recipe</h4>
               <p>
                 Are you sure you want to remove{" "}
                 <strong>"{currentRecipe?.title}"</strong> from your favourite

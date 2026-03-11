@@ -55,12 +55,14 @@ const LoginModal = ({
           <p className="message">
             Not registered? <a href="/register">Create an account</a>
           </p>
+          {/** 
           <p className="message">
             Forgot password?{" "}
             <a href="#" onClick={onForgotPasswordClick}>
               Click here
             </a>
           </p>
+          */}
         </form>
       </div>
     </div>
