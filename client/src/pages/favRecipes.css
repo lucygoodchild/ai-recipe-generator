@@ -22,7 +22,6 @@
   margin: 0;
 }
 
-/* Loading State */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -50,7 +49,6 @@
   }
 }
 
-/* Empty State */
 .empty-state {
   text-align: center;
   padding: 3rem 1.5rem;
@@ -86,7 +84,6 @@
   margin: 0 auto;
 }
 
-/* Recipe Card */
 .recipe-card {
   background: white;
   border-radius: 12px;
@@ -199,7 +196,6 @@
   position: absolute !important;
 }
 
-/* Recipe Content */
 .recipe-content {
   padding: 1.5rem 2rem;
   animation: slideDown 0.3s ease;
@@ -257,7 +253,6 @@
   font-size: 1.2rem;
 }
 
-/* Instructions List */
 .instructions-list {
   list-style: none;
   padding: 0;
@@ -327,10 +322,14 @@
   flex-wrap: wrap;
 }
 
-/* Responsive Design */
+.popup-actions button h3 {
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
 @media (max-width: 768px) {
   .fav-recipes-page {
-    padding: 0.75rem 0.5rem;
+    padding: 0.75rem 1rem;
   }
 
   .page-header h1 {
@@ -370,16 +369,12 @@
     font-size: 1rem;
   }
 
-  .remove-popup {
-    padding: 1.5rem;
-  }
-
   .remove-popup h3 {
     font-size: 1.3rem;
   }
 
   .popup-actions {
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
   }
 
@@ -428,10 +423,6 @@
     font-size: 0.8rem;
   }
 
-  .remove-popup {
-    padding: 1.25rem;
-  }
-
   .remove-popup h3 {
     font-size: 1.2rem;
   }
@@ -441,7 +432,6 @@
   }
 }
 
-/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -450,22 +440,6 @@
   }
 }
 
-/* High Contrast Mode Support */
-@media (prefers-contrast: high) {
-  .recipe-card {
-    border: 2px solid #000;
-  }
-
-  .recipe-header {
-    border-bottom: 2px solid #000;
-  }
-
-  .step-number {
-    border: 2px solid #000;
-  }
-}
-
-/* Focus Styles for Keyboard Navigation */
 .recipe-header:focus-visible {
   outline: 3px solid #a360b2;
   outline-offset: 2px;

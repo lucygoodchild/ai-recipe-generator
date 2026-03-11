@@ -60,7 +60,7 @@
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  border: 1px solid #e2e8f0;
+  border: 1px solid white;
   color: #4a5568;
   display: flex;
   align-items: center;
@@ -68,7 +68,6 @@
   font-size: 24px;
   transition: all 0.2s ease;
   z-index: 10;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .close-button:hover {
@@ -109,7 +108,6 @@
   overflow-y: auto;
   flex: 1;
   background-color: #ffffff;
-  /* Establish stacking context for proper z-index behavior */
   position: relative;
   z-index: 1;
 }
@@ -308,7 +306,6 @@
   padding-top: 2px;
 }
 
-/* Enhanced Tooltip z-index fix with more specific selectors */
 [role="tooltip"],
 .tooltip,
 .tooltip-container,
@@ -323,7 +320,6 @@ div[data-tippy-root],
   position: relative;
 }
 
-/* Additional tooltip positioning fixes */
 .favourite-button + [role="tooltip"],
 .favourite-button + .tooltip,
 .favourite-button + div[data-tooltip],
@@ -334,7 +330,6 @@ div[data-tippy-root],
   position: absolute !important;
 }
 
-/* Ensure tooltip parent containers don't clip */
 .recipe-header:has(.favourite-button) {
   overflow: visible !important;
 }
@@ -348,7 +343,6 @@ div[data-tippy-root],
   overflow-x: visible !important;
 }
 
-/* Fix for common tooltip libraries */
 .tooltip-portal,
 .tooltip-root,
 [data-floating-ui-portal],
@@ -356,7 +350,6 @@ div[data-tippy-root],
   z-index: 10001 !important;
 }
 
-/* Responsive Design */
 @media (max-width: 640px) {
   .modal-content {
     max-width: 100%;
@@ -365,7 +358,7 @@ div[data-tippy-root],
   }
 
   .modal-overlay {
-    padding: 0;
+    padding: 30px;
   }
 
   .modal-header {
@@ -401,7 +394,6 @@ div[data-tippy-root],
   }
 }
 
-/* Accessibility improvements */
 .recipe-title-button:focus-visible,
 .favourite-button:focus-visible,
 .close-button:focus-visible {
@@ -409,7 +401,6 @@ div[data-tippy-root],
   outline-offset: 2px;
 }
 
-/* Smooth scrollbar styling */
 .recipes::-webkit-scrollbar {
   width: 8px;
 }

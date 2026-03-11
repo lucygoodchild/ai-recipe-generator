@@ -1,227 +1,205 @@
-.hamburger-menu-wrapper {
-  position: relative;
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  padding: 2px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(226, 232, 240, 0.6);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  animation: fadeIn 0.3s ease-out;
 }
 
-.hamburger-menu-wrapper:hover {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(226, 232, 240, 0.8);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hamburger-menu {
+  position: relative;
+  z-index: 999;
+}
+
+.hamburger-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hamburger-toggle:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
 }
 
-.hamburger-menu-wrapper:has(.menu-column) {
-  background: rgba(255, 255, 255, 0.98);
-  border-color: rgba(59, 130, 246, 0.3);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+.hamburger-toggle:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.hamburger-menu-container {
-  z-index: 1001;
-  position: relative;
+.hamburger-toggle svg {
+  width: 20px;
+  height: 20px;
+  color: #334155;
+  transition: color 0.2s ease;
 }
 
-.menu-column {
-  position: absolute;
-  top: 100%;
+.hamburger-toggle:hover svg {
+  color: #a360b2;
+}
+
+.hamburger-drawer {
+  position: fixed;
+  top: 80px; 
   left: 0;
+  height: auto; 
+  width: 280px;
+  background: #ffffff;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1); 
+  transform: translateX(-100%); 
+  transition: transform 0.3s ease-out;
   z-index: 1000;
-  margin-top: 8px;
-  width: 120px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  animation: columnSlideIn 0.2s ease-out;
+  border-radius: 0 12px 12px 0;
   overflow: hidden;
-  /* Ensure menu never goes off screen */
-  max-width: calc(100vw - 16px);
+  display: flex;
+  flex-direction: column;
 }
 
-.menu-column.show-left {
-  left: auto;
-  right: 0;
-  animation: columnSlideInLeft 0.2s ease-out;
-  /* Ensure proper spacing from screen edge */
-  max-width: calc(100vw - 16px);
+.hamburger-drawer.open {
+  transform: translateX(0);
 }
 
-/* Mobile optimizations - using 769px to ensure 768px is included */
-@media (max-width: 769px) {
-  /* Force mobile positioning for all menu column variants */
-  .menu-column,
-  .menu-column.show-left,
-  .hamburger-menu-wrapper .menu-column,
-  .hamburger-menu-wrapper .menu-column.show-left {
-    /* Use fixed positioning relative to viewport, not parent */
-    position: fixed !important;
-    top: var(--menu-top-position, 60px) !important; /* Dynamic position or fallback */
-    left: auto !important;
-    right: 8px !important; /* Always 8px from right edge of screen */
-    width: 140px !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    animation: columnSlideInLeft 0.2s ease-out !important;
-    /* Prevent menu from going off screen */
-    max-width: calc(100vw - 16px) !important;
-    /* Ensure it's always above other content */
-    z-index: 9999 !important;
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+}
+
+.menu-item {
+  margin: 0;
+  padding: 0 8px;
+}
+
+.menu-button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.menu-button:hover {
+  background: #f1f5f9;
+}
+
+.menu-button:active {
+  background: #e2e8f0;
+}
+
+.menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: #a360b2;
+  transition: color 0.2s ease;
+}
+
+.menu-button:hover .menu-icon {
+  color: #a360b2;
+}
+
+.menu-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #334155;
+  transition: color 0.2s ease;
+}
+
+.menu-button:hover .menu-label {
+  color: #1e293b;
+}
+
+@media (max-width: 768px) {
+  .hamburger-toggle {
+    width: 48px;
+    height: 48px;
   }
 
-  .menu-tab {
-    padding: 16px 12px; /* Larger touch targets - minimum 44px recommended */
-    min-height: 44px;
+  .hamburger-toggle svg {
+    width: 22px;
+    height: 22px;
   }
 
-  .menu-tab-icon {
-    font-size: 18px; /* Slightly larger icons for mobile */
-    margin-bottom: 6px;
+  .hamburger-drawer {
+    width: 75%;
+    max-width: 320px;
+    top: 60px;
   }
 
-  .menu-tab-label {
-    font-size: 12px; /* Slightly larger text for readability */
+  .menu-button {
+    padding: 18px 16px;
+    min-height: 56px;
+  }
+
+  .menu-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .menu-label {
+    font-size: 17px;
   }
 }
 
 @media (max-width: 480px) {
-  .hamburger-menu-wrapper {
-    /* Ensure hamburger button is easy to tap */
-    padding: 4px;
-    min-width: 44px;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .menu-column,
-  .menu-column.show-left,
-  .hamburger-menu-wrapper .menu-column,
-  .hamburger-menu-wrapper .menu-column.show-left {
-    position: fixed !important;
-    top: var(--menu-top-position, 65px) !important; /* Use dynamic position */
-    width: 160px !important; /* Even wider on very small screens */
-    left: auto !important;
-    right: 8px !important; /* Consistent right margin */
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    /* Extra protection for very small screens */
-    max-width: calc(100vw - 16px) !important;
-    z-index: 9999 !important;
-  }
-
-  .menu-tab {
-    padding: 18px 16px; /* Even larger touch targets */
-    min-height: 48px;
-  }
-
-  .menu-tab-icon {
-    font-size: 20px;
-    margin-bottom: 8px;
-  }
-
-  .menu-tab-label {
-    font-size: 13px;
-    font-weight: 600;
+  .hamburger-drawer {
+    width: 80%;
+    max-width: 280px;
   }
 }
 
-@keyframes columnSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.hamburger-toggle:focus-visible,
+.menu-button:focus-visible {
+  outline: 2px solid #a360b2;
+  outline-offset: 2px;
 }
 
-@keyframes columnSlideInLeft {
-  from {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.95);
+@media (prefers-reduced-motion: reduce) {
+  .hamburger-toggle,
+  .hamburger-drawer,
+  .menu-button,
+  .menu-icon,
+  .menu-label {
+    transition: none;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+
+  .menu-overlay {
+    animation: none;
   }
 }
 
-.menu-tabs {
-  display: flex;
-  flex-direction: column;
-  padding: 8px 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-}
-
-.menu-tab {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.3);
-  position: relative;
-}
-
-.menu-tab:last-child {
-  border-bottom: none;
-}
-
-.menu-tab:hover {
-  background: rgba(59, 130, 246, 0.05);
-  transform: translateX(2px);
-}
-
-.menu-tab:active {
-  transform: translateX(2px) scale(0.98);
-  background: rgba(59, 130, 246, 0.1);
-}
-
-/* Mobile touch feedback */
-@media (hover: none) and (pointer: coarse) {
-  .menu-tab:hover {
-    transform: none; /* Disable hover transform on touch devices */
-  }
-
-  .menu-tab:active {
-    background: rgba(59, 130, 246, 0.15);
-    transform: scale(0.96);
-  }
-}
-
-.menu-tab-icon {
-  font-size: 16px;
-  color: #6b7280;
-  margin-bottom: 4px;
-  transition: all 0.2s ease;
-}
-
-.menu-tab:hover .menu-tab-icon {
-  color: #3b82f6;
-  transform: scale(1.1);
-}
-
-.menu-tab-label {
-  font-size: 11px;
-  font-weight: 500;
-  color: #374151;
-  text-align: center;
-  line-height: 1.2;
-  transition: all 0.2s ease;
-}
-
-.menu-tab:hover .menu-tab-label {
-  color: #1e293b;
-  font-weight: 600;
+/* Ensure drawer is above all other content */
+.hamburger-drawer {
+  will-change: transform;
 }

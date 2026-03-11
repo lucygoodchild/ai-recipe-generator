@@ -1,17 +1,48 @@
-import React from "react";
-import router from "next/router";
-import Hamburger from "hamburger-react";
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useAuth } from "../contexts/authContext";
-import { FaHome, FaHeart, FaUser, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaHome,
+  FaHeart,
+  FaUser,
+  FaSignOutAlt,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 import "./HamburgerMenu.css";
 
-const HamburgerMenu = () => {
-  const [isOpen, setOpen] = React.useState(false);
-  const [showOnLeft, setShowOnLeft] = React.useState(false);
-  const { logout } = useAuth();
-  const wrapperRef = React.useRef<HTMLDivElement>(null);
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  action: () => void;
+}
 
-  const menuItems = [
+const HamburgerMenu: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const { logout, isLoggedIn } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      // Call the logout function
+      await logout();
+
+      await router.push("/home");
+
+      if (typeof window !== "undefined") {
+        window.location.href = "/home";
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      if (typeof window !== "undefined") {
+        window.location.href = "/home";
+      }
+    }
+  };
+
+  const baseMenuItems: MenuItem[] = [
     {
       id: "home",
       label: "Home",
@@ -30,90 +61,108 @@ const HamburgerMenu = () => {
       icon: <FaUser />,
       action: () => router.push("/account"),
     },
-    {
-      id: "logout",
-      label: "Logout",
-      icon: <FaSignOutAlt />,
-      action: () => logout(),
-    },
   ];
 
-  const handleMenuItemClick = (item: any) => {
+  const menuItems: MenuItem[] = isLoggedIn
+    ? [
+        ...baseMenuItems,
+        {
+          id: "logout",
+          label: "Logout",
+          icon: <FaSignOutAlt />,
+          action: handleLogout,
+        },
+      ]
+    : baseMenuItems;
+
+  const handleMenuItemClick = (item: MenuItem) => {
+    if (item.id !== "logout") {
+      setIsOpen(false);
+    }
     item.action();
-    // Close the hamburger menu after selection
-    setOpen(false);
   };
 
-  React.useEffect(() => {
-    if (isOpen && wrapperRef.current) {
-      const isMobile = window.innerWidth <= 769;
-      const rect = wrapperRef.current.getBoundingClientRect();
-
-      if (isMobile) {
-        const topPosition = rect.bottom + 8;
-        document.documentElement.style.setProperty(
-          "--menu-top-position",
-          `${topPosition}px`,
-        );
-        setShowOnLeft(false);
-      } else {
-        const menuWidth = 120;
-        const spaceOnRight = window.innerWidth - rect.left;
-        setShowOnLeft(spaceOnRight < menuWidth + 16);
-      }
-    }
-  }, [isOpen]);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   // Close menu when clicking outside
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node;
+      const drawer = document.querySelector(".hamburger-drawer");
+      const toggle = document.querySelector(".hamburger-toggle");
+
       if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
+        drawer &&
+        !drawer.contains(target) &&
+        toggle &&
+        !toggle.contains(target)
       ) {
-        setOpen(false);
+        setIsOpen(false);
       }
     };
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
       document.addEventListener("touchstart", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-        document.removeEventListener("touchstart", handleClickOutside);
-      };
     }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  // Close menu on escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen]);
 
   return (
-    <div className="hamburger-menu-wrapper" ref={wrapperRef}>
-      <div className="hamburger-menu-container">
-        <Hamburger
-          toggled={isOpen}
-          toggle={setOpen}
-          direction="right"
-          rounded
-          size={18}
-        />
-      </div>
-
+    <>
       {isOpen && (
-        <div className={`menu-column ${showOnLeft ? "show-left" : ""}`}>
-          <div className="menu-tabs">
-            {menuItems.map((item) => (
-              <div
-                key={item.id}
-                className="menu-tab"
-                onClick={() => handleMenuItemClick(item)}
-              >
-                <div className="menu-tab-icon">{item.icon}</div>
-                <span className="menu-tab-label">{item.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <div className="menu-overlay" onClick={() => setIsOpen(false)} />
       )}
-    </div>
+
+      <div className="hamburger-menu" ref={menuRef}>
+        <button
+          className="hamburger-toggle"
+          onClick={toggleMenu}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
+        >
+          {isOpen ? <FaTimes /> : <FaBars />}
+        </button>
+
+        <nav
+          className={`hamburger-drawer ${isOpen ? "open" : ""}`}
+          aria-hidden={!isOpen}
+        >
+          <ul className="menu-list">
+            {menuItems.map((item) => (
+              <li key={item.id} className="menu-item">
+                <button
+                  className="menu-button"
+                  onClick={() => handleMenuItemClick(item)}
+                  aria-label={item.label}
+                >
+                  <span className="menu-icon">{item.icon}</span>
+                  <span className="menu-label">{item.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </>
   );
 };
 
