@@ -150,73 +150,13 @@
   cursor: not-allowed;
 }
 
-.demo-container {
-  padding: 24px;
-  max-width: 600px;
-  margin: 0 auto;
+.form-input.error {
+  border-color: #e14c4c;
 }
 
-.demo-title {
-  margin-bottom: 24px;
-}
-
-.demo-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.demo-list-item {
-  padding: 12px;
-  margin-bottom: 8px;
-  background-color: #f5f5f5;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.demo-item-quantity {
-  margin-left: 8px;
-  color: #666;
-}
-
-.demo-delete-btn {
-  background: none;
-  border: none;
-  color: #d32f2f;
-  cursor: pointer;
-  font-size: 20px;
-  padding: 4px 8px;
-  transition: color 0.2s;
-}
-
-.demo-delete-btn:hover {
-  color: #b71c1c;
-}
-
-.demo-add-btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 16px;
-  background-color: #a360b2;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background-color 0.2s;
-}
-
-.demo-add-btn:hover {
-  background-color: #a360b2;
-}
-
-.demo-add-icon {
-  font-size: 24px;
+.error-message {
+  color: #e14c4c;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 0;
 }

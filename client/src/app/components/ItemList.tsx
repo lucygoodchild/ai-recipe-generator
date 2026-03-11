@@ -25,6 +25,54 @@ interface ItemListProps {
   collection: string;
 }
 
+// Validation function for item names
+const validateItemName = (name: string): { isValid: boolean; error: string | null } => {
+  const trimmedName = name.trim();
+  
+  if (!trimmedName) {
+    return {
+      isValid: false,
+      error: "Item name cannot be empty"
+    };
+  }
+  
+  if (trimmedName.length > 30) {
+    return {
+      isValid: false,
+      error: "Item name must be 30 characters or less"
+    };
+  }
+  
+  // Only allow letters, spaces, and hyphens
+  const validPattern = /^[a-zA-Z\s-]+$/;
+  if (!validPattern.test(trimmedName)) {
+    return {
+      isValid: false,
+      error: "Item name can only contain letters, spaces, and hyphens"
+    };
+  }
+  
+  // Must contain at least one letter
+  const hasLetter = /[a-zA-Z]/.test(trimmedName);
+  if (!hasLetter) {
+    return {
+      isValid: false,
+      error: "Item name must contain at least one letter"
+    };
+  }
+  
+  return {
+    isValid: true,
+    error: null
+  };
+};
+
+// Sanitize input by removing invalid characters
+const sanitizeItemName = (name: string): string => {
+  // Remove any characters that aren't letters, spaces, or hyphens
+  return name.replace(/[^a-zA-Z\s-]/g, '');
+};
+
 const ItemList = ({ initialItems, collection }: ItemListProps) => {
   const [itemList, setItemList] = useState<
     { _id: number; name: string; quantity: string; measurement: string }[]
@@ -36,6 +84,7 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
     quantity: string;
     measurement: string;
   } | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const { isLoggedIn, userId } = useAuth();
 
   const handleAddItem = async (itemData: {
@@ -43,6 +92,16 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
     quantity: string;
     measurement: string;
   }) => {
+    // Validate item name before processing
+    const validation = validateItemName(itemData.name);
+    if (!validation.isValid) {
+      setValidationError(validation.error);
+      return;
+    }
+
+    // Clear any previous validation errors
+    setValidationError(null);
+
     if (editingItem) {
       // Update existing item
       setItemList((prev) =>
@@ -70,7 +129,11 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
       // Add new item
       if (isLoggedIn) {
         try {
-          const addedItem = await addItem(itemData.name, collection, userId);
+          const addedItem = await addItem(
+            itemData.name.trim(),
+            collection,
+            userId,
+          );
 
           if (addedItem instanceof Error) {
             return;
@@ -90,7 +153,7 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
         }
       } else {
         const localStorageItem = addItemToLocalStorage({
-          name: itemData.name,
+          name: itemData.name.trim(),
           quantity: itemData.quantity,
           measurement: itemData.measurement,
           type: collection,
@@ -99,7 +162,7 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
         setItemList((prev) => [...prev, localStorageItem]);
       }
     }
-  };
+  };;
 
   const handleMinusClick = (itemId: number) => {
     return async () => {
@@ -123,12 +186,14 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
     measurement: string;
   }) => {
     setEditingItem(item);
+    setValidationError(null); // Clear validation errors when opening for edit
     setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
     setEditingItem(null);
+    setValidationError(null); // Clear validation errors on close
   };
 
   const handleInputFocus = () => {
@@ -185,6 +250,9 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
         onClose={handleModalClose}
         onAddItem={handleAddItem}
         editingItem={editingItem}
+        validationError={validationError}
+        sanitizeInput={sanitizeItemName}
+        validateInput={validateItemName}
       />
     </div>
   );

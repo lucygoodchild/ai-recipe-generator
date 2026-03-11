@@ -31,17 +31,76 @@ interface AddItemModalProps {
     quantity: string;
     measurement: string;
   } | null;
+  validationError?: string | null;
+  sanitizeInput?: (input: string) => string;
+  validateInput?: (input: string) => { isValid: boolean; error: string | null };
 }
+
+// Default validation function if not provided via props
+const defaultValidateItemName = (
+  name: string,
+): { isValid: boolean; error: string | null } => {
+  const trimmedName = name.trim();
+
+  if (!trimmedName) {
+    return {
+      isValid: false,
+      error: "Item name cannot be empty",
+    };
+  }
+
+  if (trimmedName.length > 30) {
+    return {
+      isValid: false,
+      error: "Item name must be 30 characters or less",
+    };
+  }
+
+  // Only allow letters, spaces, and hyphens
+  const validPattern = /^[a-zA-Z\s-]+$/;
+  if (!validPattern.test(trimmedName)) {
+    return {
+      isValid: false,
+      error: "Item name can only contain letters, spaces, and hyphens",
+    };
+  }
+
+  // Must contain at least one letter
+  const hasLetter = /[a-zA-Z]/.test(trimmedName);
+  if (!hasLetter) {
+    return {
+      isValid: false,
+      error: "Item name must contain at least one letter",
+    };
+  }
+
+  return {
+    isValid: true,
+    error: null,
+  };
+};
+
+// Default sanitize function if not provided via props
+const defaultSanitizeItemName = (name: string): string => {
+  // Remove any characters that aren't letters, spaces, or hyphens
+  return name.replace(/[^a-zA-Z\s-]/g, "");
+};
 
 const AddItemModal = ({
   isOpen,
   onClose,
   onAddItem,
   editingItem,
+  validationError,
+  sanitizeInput = defaultSanitizeItemName,
+  validateInput = defaultValidateItemName,
 }: AddItemModalProps) => {
   const [itemName, setItemName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [measurement, setMeasurement] = useState("");
+  const [localValidationError, setLocalValidationError] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     if (editingItem) {
@@ -53,7 +112,9 @@ const AddItemModal = ({
       setQuantity("");
       setMeasurement("");
     }
-  }, [editingItem]);
+    // Clear local validation error when modal opens/closes or editing item changes
+    setLocalValidationError(null);
+  }, [editingItem, isOpen]);
 
   // Validation function to check if both quantity and measurement are provided together
   const isValidQuantityMeasurement = () => {
@@ -64,8 +125,28 @@ const AddItemModal = ({
     return (hasQuantity && hasMeasurement) || (!hasQuantity && !hasMeasurement);
   };
 
+  const handleItemNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+
+    // Sanitize input to remove invalid characters
+    value = sanitizeInput(value);
+
+    setItemName(value);
+
+    // Validate on change
+    const validation = validateInput(value);
+    setLocalValidationError(validation.error);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Final validation before submit
+    const validation = validateInput(itemName);
+    if (!validation.isValid) {
+      setLocalValidationError(validation.error);
+      return;
+    }
 
     // Check if item name exists and quantity/measurement validation passes
     if (itemName.trim() && isValidQuantityMeasurement()) {
@@ -78,6 +159,7 @@ const AddItemModal = ({
       setItemName("");
       setQuantity("");
       setMeasurement("");
+      setLocalValidationError(null);
       onClose();
     }
   };
@@ -86,7 +168,21 @@ const AddItemModal = ({
     setItemName("");
     setQuantity("");
     setMeasurement("");
+    setLocalValidationError(null);
     onClose();
+  };
+
+  // Determine which error to show (prop error takes precedence)
+  const errorToShow = validationError || localValidationError;
+
+  // Check if submit button should be disabled
+  const isSubmitDisabled = () => {
+    const nameValidation = validateInput(itemName);
+    return (
+      !itemName.trim() ||
+      !isValidQuantityMeasurement() ||
+      !nameValidation.isValid
+    );
   };
 
   if (!isOpen) return null;
@@ -111,14 +207,16 @@ const AddItemModal = ({
             <label className="form-label">Item Name *</label>
             <input
               type="text"
-              className="form-input"
+              className={`form-input ${errorToShow ? "error" : ""}`}
               value={itemName}
-              onChange={(e) => setItemName(e.target.value)}
+              onChange={handleItemNameChange}
               onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
               placeholder="e.g., tomatoes, chicken breast..."
+              maxLength={30}
               autoFocus
               disabled={!!editingItem}
             />
+            {errorToShow && <p className="error-message">{errorToShow}</p>}
           </div>
 
           <div className="form-group">
@@ -155,7 +253,7 @@ const AddItemModal = ({
             <button
               className="btn btn-submit"
               onClick={handleSubmit}
-              disabled={!itemName.trim() || !isValidQuantityMeasurement()}
+              disabled={isSubmitDisabled()}
             >
               {editingItem ? "Update Item" : "Add Item"}
             </button>
