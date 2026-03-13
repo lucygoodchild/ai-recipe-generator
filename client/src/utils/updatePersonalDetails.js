@@ -4,6 +4,7 @@ export const updateName = async (name, userId) => {
   try {
     const response = await fetch(`/api/v1/users/update-me?userId=${userId}`, {
       method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -30,6 +31,7 @@ export const updateEmail = async (email, userId) => {
   try {
     const response = await fetch(`/api/v1/users/update-me?userId=${userId}`, {
       method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

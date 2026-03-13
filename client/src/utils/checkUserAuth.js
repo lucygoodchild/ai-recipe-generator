@@ -1,23 +1,29 @@
 export const checkUserAuth = async () => {
   try {
-
     const response = await fetch("/api/v1/users/check-auth", {
       method: "POST",
       credentials: "include",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to check authentication");
+    if (response.ok) {
+      const data = await response.json();
+      const userId = data.data?.user?._id || null;
+
+      if (userId) {
+        return {
+          userId: userId,
+          isAuthenticated: true,
+          user: data.data.user,
+        };
+      }
     }
 
-    const data = await response.json();
-    return { isLoggedIn: true, user: data.data.user };
-  } catch (err) {
-    console.error(err);
-    return { isLoggedIn: false, error: err.message };
+    return null;
+  } catch (error) {
+    console.error("Failed to check auth:", error);
+    return null;
   }
 };

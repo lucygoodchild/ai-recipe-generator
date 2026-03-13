@@ -31,11 +31,44 @@ exports.getItemsOfType = catchAsync(async (req, res, next) => {
 //   });
 // };
 
-exports.addItem = catchAsync(async (req, res) => {
-  const newItem = await Item.create({
-    ...req.body,
-    type: req.params.type,
-  });
+exports.addItem = catchAsync(async (req, res, next) => {
+  const { name, quantity, measurement, userId } = req.body;
+  const { type } = req.params;
+
+  // Input validation
+  if (!name || typeof name !== 'string' || name.trim().length === 0) {
+    return next(new AppError('Item name is required and must be a non-empty string', 400));
+  }
+
+  if (!userId || typeof userId !== 'string') {
+    return next(new AppError('User ID is required', 400));
+  }
+
+  // Validate ObjectId format
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return next(new AppError('Invalid user ID format', 400));
+  }
+
+  if (!type || typeof type !== 'string') {
+    return next(new AppError('Item type is required', 400));
+  }
+
+  // Validate type is one of allowed values
+  const allowedTypes = ['cupboard', 'fridge', 'freezer'];
+  if (!allowedTypes.includes(type)) {
+    return next(new AppError('Item type must be one of: cupboard, fridge, freezer', 400));
+  }
+
+  // Sanitize inputs
+  const sanitizedData = {
+    name: name.trim(),
+    quantity: quantity ? quantity.toString().trim() : '',
+    measurement: measurement ? measurement.toString().trim() : '',
+    userId,
+    type,
+  };
+
+  const newItem = await Item.create(sanitizedData);
   res.status(201).json({ status: "success", data: newItem });
 });
 
@@ -73,9 +106,40 @@ exports.deleteItem = catchAsync(async (req, res, next) => {
 });
 
 exports.updateItem = catchAsync(async (req, res, next) => {
+  const { name, quantity, measurement } = req.body;
+  const { id } = req.params;
+  const { userId } = req.query;
+
+  // Validate ObjectId format
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return next(new AppError('Invalid item ID format', 400));
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return next(new AppError('Invalid user ID format', 400));
+  }
+
+  // Build update object with only allowed fields
+  const updateData = {};
+
+  if (name !== undefined) {
+    if (typeof name !== 'string' || name.trim().length === 0) {
+      return next(new AppError('Item name must be a non-empty string', 400));
+    }
+    updateData.name = name.trim();
+  }
+
+  if (quantity !== undefined) {
+    updateData.quantity = quantity ? quantity.toString().trim() : '';
+  }
+
+  if (measurement !== undefined) {
+    updateData.measurement = measurement ? measurement.toString().trim() : '';
+  }
+
   const updatedItem = await Item.findOneAndUpdate(
-    { _id: req.params.id, userId: req.query.userId },
-    req.body,
+    { _id: id, userId: userId },
+    updateData,
     {
       new: true,
       runValidators: true,

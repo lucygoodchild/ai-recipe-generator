@@ -4,7 +4,6 @@ const itemSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Item must have a name"],
-    unique: true,
     trim: true,
   },
   type: String,
@@ -22,7 +21,10 @@ const itemSchema = new mongoose.Schema({
   },
 });
 
-//Pre-validate middleware to check if the item already exists with userId?
+// Create compound index for efficient user-specific queries
+itemSchema.index({ userId: 1, name: 1 }, { unique: true });
+
+//Pre-validate middleware to check if the item already exists with userId
 itemSchema.pre("validate", async function (next) {
   if (this.isModified("name") || this.isNew) {
     const existingItem = await mongoose.models.Item.findOne({
@@ -30,11 +32,10 @@ itemSchema.pre("validate", async function (next) {
       userId: this.userId,
     });
     if (existingItem) {
-      const error = new Error(
-        "Item with this name already exists for this user. Edit the amount of the existing item"
-      );
-      error.name = "ValidationError";
-      return next(error);
+      quantity = parseFloat(existingItem.quantity) || 0;
+      const newQuantity = parseFloat(this.quantity) || 0;
+      this.quantity = (quantity + newQuantity).toString();
+      this.isNew = false; // Prevent creating a new document
     }
   }
   next();

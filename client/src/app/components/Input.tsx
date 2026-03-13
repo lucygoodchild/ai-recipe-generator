@@ -3,15 +3,29 @@ import "./Input.css";
 
 interface InputProps {
   id: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
   placeHolderText: string;
   type: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.ChangeEventHandler<HTMLInputElement>;
   autoComplete?: string;
+  onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  readonly?: boolean;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ id, onChange, placeHolderText, type, onBlur, autoComplete }, ref) => {
+  (
+    {
+      id,
+      placeHolderText,
+      type,
+      onChange,
+      onBlur,
+      autoComplete,
+      onFocus,
+      readonly,
+    },
+    ref,
+  ) => {
     return (
       <input
         type={type}
@@ -21,9 +35,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         onBlur={onBlur}
         autoComplete={autoComplete}
+        onFocus={onFocus}
+        readOnly={readonly}
       ></input>
     );
-  }
+  },
 );
 
 export default Input;

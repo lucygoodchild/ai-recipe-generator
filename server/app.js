@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === "development") {
 
 //limit requests from same api
 const limiter = rateLimit({
-  max: 100,
+  max: 500,
   windowMs: 60 * 60 * 1000,
   message: JSON.stringify({
     status: "fail",
@@ -42,7 +42,7 @@ const limiter = rateLimit({
       "Too many requests from this IP address, please try again in an hour.",
   }),
 });
-app.use("/api", limiter);
+//app.use("/api", limiter);
 
 //body parser
 app.use(express.json({ limit: "10kb" }));

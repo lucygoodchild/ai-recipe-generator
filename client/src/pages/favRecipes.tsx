@@ -1,17 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchFavouriteRecipes } from "../utils/fetchFavouriteRecipes";
 import { useFavouriteRecipes } from "../app/contexts/favRecipesContext";
 import { removeFavouriteRecipes } from "../utils/removeFavouriteRecipes";
-import { AuthContext } from "../app/contexts/authContext";
-import { FaHeart } from "react-icons/fa6";
+import { useAuth } from "../app/contexts/authContext";
+import { FaHeart, FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import IconButton from "../app/components/IconButton";
 import ToolTip from "../app/components/ToolTip";
 import Popup from "../app/components/Popup";
 import Button from "../app/components/Button";
 import "./favRecipes.css";
+import { ProtectedRoute } from "../app/components/ProtectedRoute";
 
 interface Recipe {
-  id: string;
+  _id: string;
   title: string;
   ingredients: [];
   instructions: [];
@@ -21,115 +22,166 @@ interface Recipe {
 const FavRecipes = () => {
   const { setFavRecipes, removeFavRecipe, favouriteRecipes } =
     useFavouriteRecipes();
-  const { userId } = useContext(AuthContext);
-  const [expandedRecipes, setExpandedRecipes] = useState<number[]>([]);
+  const { userId, isLoggedIn } = useAuth();
+  const [expandedRecipes, setExpandedRecipes] = useState<string[]>([]);
   const [removeRecipePopup, setRemoveRecipePopup] = useState(false);
   const [currentRecipe, setCurrentRecipe] = useState<Recipe>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchFavRecipes = async () => {
-      console.log(userId);
+      setIsLoading(true);
       const recipes = await fetchFavouriteRecipes(userId);
       setFavRecipes(recipes);
+      setIsLoading(false);
     };
-    fetchFavRecipes();
-  }, [removeFavRecipe]);
+    if (isLoggedIn) fetchFavRecipes();
+  }, [userId]);
 
-  const toggleRecipe = (index: number) => {
+  const toggleRecipe = (recipeId: string) => {
     setExpandedRecipes((prevExpandedRecipes) =>
-      prevExpandedRecipes.includes(index)
-        ? prevExpandedRecipes.filter((i) => i !== index)
-        : [...prevExpandedRecipes, index]
+      prevExpandedRecipes.includes(recipeId)
+        ? prevExpandedRecipes.filter((id) => id !== recipeId)
+        : [...prevExpandedRecipes, recipeId],
     );
   };
 
-  const removeRecipe = async (id: string) => {
+  const removeRecipe = async (recipeId: string) => {
     setRemoveRecipePopup(true);
     // remove from DB
-    const removeRecipeResponse = await removeFavouriteRecipes(id);
+    const removeRecipeResponse = await removeFavouriteRecipes(recipeId, userId);
     if (removeRecipeResponse) {
-      removeFavRecipe(id);
+      removeFavRecipe(recipeId);
       //close popup
       setRemoveRecipePopup(false);
     }
   };
 
   return (
-    <div className="fav-recipes-page">
-      <h1>Your Favourite Recipes</h1>
-      <p>Click on the recipe titles for more details</p>
-      <div className="recipes-container">
-        {favouriteRecipes.length === 0 ? (
-          <div className="no-recipes-message">
-            You have no favourite recipes yet
+    <ProtectedRoute>
+      <div className="fav-recipes-page">
+        <div className="page-header">
+          <h1>Your Favourite Recipes</h1>
+          <p className="subtitle">
+            Click on the recipe cards to view full details
+          </p>
+        </div>
+
+        {isLoading ? (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Loading your recipes...</p>
           </div>
         ) : (
-          favouriteRecipes.map((recipe: Recipe, index: number) => (
-            <div className="recipe-item" key={recipe.id}>
-              <div className="recipe-title">
-                <h2
-                  onClick={() => toggleRecipe(index)}
-                  className="recipe-title"
+          <div className="recipes-grid">
+            {favouriteRecipes.length === 0 ? (
+              <div className="empty-state">
+                <FaHeart className="empty-icon" />
+                <h3>No favourite recipes yet</h3>
+                <p>Start adding recipes to your favourites to see them here</p>
+              </div>
+            ) : (
+              favouriteRecipes.map((recipe: Recipe) => (
+                <div
+                  className={`recipe-card ${expandedRecipes.includes(recipe._id) ? "expanded" : ""}`}
+                  key={recipe._id}
                 >
-                  {recipe.title}
-                </h2>
-                <ToolTip
-                  text="Remove recipe from favourites"
-                  children={
-                    <IconButton
-                      onClick={() => {
-                        setCurrentRecipe(recipe);
-                        removeRecipe(recipe.id);
-                      }}
-                      children={<FaHeart />}
-                    />
-                  }
+                  <div
+                    className="recipe-header"
+                    onClick={() => toggleRecipe(recipe._id)}
+                  >
+                    <h2 className="recipe-title">{recipe.title}</h2>
+                    <div className="recipe-actions">
+                      <div className="expand-icon">
+                        {expandedRecipes.includes(recipe._id) ? (
+                          <FaChevronUp />
+                        ) : (
+                          <FaChevronDown />
+                        )}
+                      </div>
+                      <ToolTip
+                        text="Remove from favourites"
+                        children={
+                          <IconButton
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentRecipe(recipe);
+                              setRemoveRecipePopup(true);
+                            }}
+                            children={<FaHeart className="heart-icon filled" />}
+                          />
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  {expandedRecipes.includes(recipe._id) && (
+                    <div className="recipe-content">
+                      <div className="recipe-section">
+                        <h3>Ingredients</h3>
+                        <ul className="ingredients-list">
+                          {recipe.ingredients.map(
+                            (ingredient: string, i: number) => (
+                              <li key={i}>
+                                <span className="ingredient-bullet">•</span>
+                                {ingredient}
+                              </li>
+                            ),
+                          )}
+                        </ul>
+                      </div>
+
+                      <div className="recipe-section">
+                        <h3>Instructions</h3>
+                        <ol className="instructions-list">
+                          {recipe.instructions.map(
+                            (instruction: string, i: number) => (
+                              <li key={i}>
+                                <span className="step-number">{i + 1}</span>
+                                <span className="step-text">{instruction}</span>
+                              </li>
+                            ),
+                          )}
+                        </ol>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        <Popup
+          isOpen={removeRecipePopup}
+          children={
+            <div className="remove-popup">
+              <h4>Remove Recipe</h4>
+              <p>
+                Are you sure you want to remove{" "}
+                <strong>"{currentRecipe?.title}"</strong> from your favourite
+                recipes?
+              </p>
+              <div className="popup-actions">
+                <Button
+                  text="Remove"
+                  onClick={() => {
+                    if (currentRecipe) {
+                      removeRecipe(currentRecipe._id);
+                    }
+                    setRemoveRecipePopup(false);
+                  }}
+                />
+                <Button
+                  text="Cancel"
+                  onClick={() => setRemoveRecipePopup(false)}
                 />
               </div>
-              {expandedRecipes.includes(index) && (
-                <div className="recipe-details">
-                  <h4>Ingredients:</h4>
-                  <ul>
-                    {recipe.ingredients.map((ingredient: string, i: number) => (
-                      <li key={i}>{ingredient}</li>
-                    ))}
-                  </ul>
-                  <h4>Instructions:</h4>
-                  <ol>
-                    {recipe.instructions.map(
-                      (instruction: string, i: number) => (
-                        <li key={i}>{instruction}</li>
-                      )
-                    )}
-                  </ol>
-                  <div className="removeFav-button"></div>
-                </div>
-              )}
             </div>
-          ))
-        )}
+          }
+        />
       </div>
-      <Popup
-        isOpen={removeRecipePopup}
-        children={
-          <div className="fav-recipes-popup">
-            <h3>
-              Are you sure you want to remove "{currentRecipe?.title}" from your
-              favourite recipes?
-            </h3>
-            <div className="fav-recipes-popup-buttons">
-              <Button
-                text="Yes"
-                onClick={() => {
-                  if (currentRecipe) removeRecipe(currentRecipe.id);
-                }}
-              />
-              <Button text="No" onClick={() => setRemoveRecipePopup(false)} />
-            </div>
-          </div>
-        }
-      />
-    </div>
+    </ProtectedRoute>
   );
 };
 

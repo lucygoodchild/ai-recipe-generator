@@ -6,14 +6,16 @@ export const removeFavouriteRecipes = async (recipeId, userId) => {
       `/api/v1/favourite-recipes/${recipeId}?userId=${userId}`,
       {
         method: "DELETE",
-      }
+        credentials: "include",
+      },
     );
 
     if (!response.ok) {
-      throw new Error(`Error removing recipe from favourites`);
+      throw new Error(
+        `Error removing recipe from favourites. Status ${response.status}`,
+      );
     }
 
-    await response.json();
     toast.success("Recipe removed from favourites");
     return true;
   } catch (err) {

@@ -1,12 +1,10 @@
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../../contexts/authContext";
+import React, { useState } from "react";
 import Input from "../Input";
 import Button from "../Button";
 import LoadingSpinner from "../LoadingSpinner";
 import "./ChangePasswordTab.css";
 
 const ChangePasswordTab = () => {
-  const { userId } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
   if (loading) return <LoadingSpinner />;
@@ -41,7 +39,9 @@ const ChangePasswordTab = () => {
           type="password"
           autoComplete="new-password"
         ></Input>
-        <Button onClick={() => {}} text="update password"></Button>
+        <div className="update-password-button-wrapper">
+          <Button onClick={() => {}} text="update password"></Button>
+        </div>
       </div>
     </div>
   );

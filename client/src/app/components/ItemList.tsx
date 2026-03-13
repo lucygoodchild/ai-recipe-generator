@@ -1,9 +1,10 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useState } from "react";
 import { CgAdd } from "react-icons/cg";
+import { MdPlaylistAdd } from "react-icons/md";
 import { addItem } from "../../utils/addItem";
 import { deleteItem } from "../../utils/deleteItem";
 import { updateItem } from "../../utils/updateItem";
-import { AuthContext } from "../contexts/authContext";
+import { useAuth } from "../contexts/authContext";
 import {
   addItemToLocalStorage,
   deleteItemFromLocalStorage,
@@ -11,8 +12,7 @@ import {
 } from "../../utils/localStorageHelpers.js";
 import Item from "./Item";
 import Input from "./Input";
-import IconButton from "./IconButton";
-import ToolTip from "./ToolTip";
+import AddItemModal from "./AddItemModal";
 import "./ItemList.css";
 
 interface ItemListProps {
@@ -25,56 +25,144 @@ interface ItemListProps {
   collection: string;
 }
 
+// Validation function for item names
+const validateItemName = (name: string): { isValid: boolean; error: string | null } => {
+  const trimmedName = name.trim();
+  
+  if (!trimmedName) {
+    return {
+      isValid: false,
+      error: "Item name cannot be empty"
+    };
+  }
+  
+  if (trimmedName.length > 30) {
+    return {
+      isValid: false,
+      error: "Item name must be 30 characters or less"
+    };
+  }
+  
+  // Only allow letters, spaces, and hyphens
+  const validPattern = /^[a-zA-Z\s-]+$/;
+  if (!validPattern.test(trimmedName)) {
+    return {
+      isValid: false,
+      error: "Item name can only contain letters, spaces, and hyphens"
+    };
+  }
+  
+  // Must contain at least one letter
+  const hasLetter = /[a-zA-Z]/.test(trimmedName);
+  if (!hasLetter) {
+    return {
+      isValid: false,
+      error: "Item name must contain at least one letter"
+    };
+  }
+  
+  return {
+    isValid: true,
+    error: null
+  };
+};
+
+// Sanitize input by removing invalid characters
+const sanitizeItemName = (name: string): string => {
+  // Remove any characters that aren't letters, spaces, or hyphens
+  return name.replace(/[^a-zA-Z\s-]/g, '');
+};
+
 const ItemList = ({ initialItems, collection }: ItemListProps) => {
-  const [item, setItem] = useState("");
   const [itemList, setItemList] = useState<
     { _id: number; name: string; quantity: string; measurement: string }[]
   >([...initialItems]);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { isLoggedIn, userId } = useContext(AuthContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<{
+    _id: number;
+    name: string;
+    quantity: string;
+    measurement: string;
+  } | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
+  const { isLoggedIn, userId } = useAuth();
 
-  const handleAddClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    if (isLoggedIn) {
-      try {
-        // Add the item to the database and get the response
-        const addedItem = await addItem(item, collection, userId);
+  const handleAddItem = async (itemData: {
+    name: string;
+    quantity: string;
+    measurement: string;
+  }) => {
+    // Validate item name before processing
+    const validation = validateItemName(itemData.name);
+    if (!validation.isValid) {
+      setValidationError(validation.error);
+      return;
+    }
 
-        if (addedItem instanceof Error) {
-          return;
-        }
+    // Clear any previous validation errors
+    setValidationError(null);
 
-        // Update the state with the database response
-        setItemList((prev) => [
-          ...prev,
-          {
-            _id: addedItem.id,
-            name: addedItem.name,
-            quantity: "",
-            measurement: "",
-          },
-        ]);
-      } catch (error) {
-        console.error("Failed to add item to the database", error);
+    if (editingItem) {
+      // Update existing item
+      setItemList((prev) =>
+        prev.map((item) =>
+          item._id === editingItem._id ? { ...item, ...itemData } : item,
+        ),
+      );
+
+      if (isLoggedIn) {
+        await updateItem(
+          editingItem._id,
+          itemData.quantity,
+          itemData.measurement,
+          userId,
+        );
+      } else {
+        editItemFromLocalStorage(
+          editingItem._id,
+          itemData.quantity,
+          itemData.measurement,
+        );
       }
+      setEditingItem(null);
     } else {
-      // Add item to local storage with a temporary ID
-      const localStorageItem = addItemToLocalStorage({
-        name: item,
-        quantity: "",
-        measurement: "",
-        type: collection,
-      });
+      // Add new item
+      if (isLoggedIn) {
+        try {
+          const addedItem = await addItem(
+            itemData.name.trim(),
+            collection,
+            userId,
+          );
 
-      // Update state immediately with the local storage item
-      setItemList((prev) => [...prev, localStorageItem]);
-    }
+          if (addedItem instanceof Error) {
+            return;
+          }
 
-    setItem("");
-    if (inputRef.current) {
-      inputRef.current.value = "";
+          setItemList((prev) => [
+            ...prev,
+            {
+              _id: addedItem.id,
+              name: addedItem.name,
+              quantity: itemData.quantity,
+              measurement: itemData.measurement,
+            },
+          ]);
+        } catch (error) {
+          console.error("Failed to add item to the database", error);
+        }
+      } else {
+        const localStorageItem = addItemToLocalStorage({
+          name: itemData.name.trim(),
+          quantity: itemData.quantity,
+          measurement: itemData.measurement,
+          type: collection,
+        });
+
+        setItemList((prev) => [...prev, localStorageItem]);
+      }
     }
-  };
+  };;
 
   const handleMinusClick = (itemId: number) => {
     return async () => {
@@ -91,61 +179,82 @@ const ItemList = ({ initialItems, collection }: ItemListProps) => {
     };
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setItem(event.target.value.toLowerCase());
-    // setIsExpanded(true);
+  const handleEditClick = (item: {
+    _id: number;
+    name: string;
+    quantity: string;
+    measurement: string;
+  }) => {
+    setEditingItem(item);
+    setValidationError(null); // Clear validation errors when opening for edit
+    setIsModalOpen(true);
   };
 
-  const handleAddItemQuantity = async (
-    itemId: number,
-    quantity: string,
-    measurement: string
-  ) => {
-    setItemList((prev) =>
-      prev.map((item) =>
-        item._id === itemId ? { ...item, quantity, measurement } : item
-      )
-    );
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setEditingItem(null);
+    setValidationError(null); // Clear validation errors on close
+  };
 
-    if (isLoggedIn) {
-      await updateItem(itemId, quantity, measurement, userId);
-    } else {
-      editItemFromLocalStorage(itemId, quantity, measurement);
-    }
+  const handleInputFocus = () => {
+    setIsModalOpen(true);
   };
 
   return (
-    <ul>
-      {itemList.map((item) => {
-        return (
-          <Item
-            onDeleteClick={handleMinusClick(item._id)}
-            onAddQuantityClick={(quantity, measurement) =>
-              handleAddItemQuantity(item._id, quantity, measurement)
-            }
-            key={item._id}
-            itemName={item.name}
-            initialQuantity={item.quantity}
-            initialMeasurement={item.measurement}
-            expandInput={false}
-          />
-        );
-      })}
+    <div className="item-list-container">
+      {itemList.length === 0 && (
+        <div className="empty-item-state">
+          <div className="empty-item-state-icon">
+            <MdPlaylistAdd />
+          </div>
+          <p className="empty-item-state-text">No items yet</p>
+          <p className="empty-item-state-hint">
+            Click below to add your first item
+          </p>
+        </div>
+      )}
+
+      <ul>
+        {itemList.map((item, index) => {
+          return (
+            <div
+              key={item._id}
+              className="item-enter"
+              style={{ animationDelay: `${index * 0.05}s` }}
+            >
+              <Item
+                item={item}
+                onDeleteClick={handleMinusClick(item._id)}
+                onEditClick={() => handleEditClick(item)}
+              />
+            </div>
+          );
+        })}
+      </ul>
+
       <form>
-        <Input
-          id="item-input"
-          type="text"
-          ref={inputRef}
-          onChange={handleChange}
-          placeHolderText="Enter item.."
-        />
-        <ToolTip text={"Add item"}>
-          <IconButton onClick={handleAddClick} disabled={!item}>
-            <CgAdd className="add-icon"></CgAdd>
-          </IconButton>
-        </ToolTip>
+        <div style={{ position: "relative" }}>
+          <CgAdd className="add-item-icon" />
+          <Input
+            id="item-input"
+            type="text"
+            onFocus={handleInputFocus}
+            placeHolderText="Click to add new item..."
+            readonly
+          />
+        </div>
       </form>
-    </ul>
+
+      <AddItemModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onAddItem={handleAddItem}
+        editingItem={editingItem}
+        validationError={validationError}
+        sanitizeInput={sanitizeItemName}
+        validateInput={validateItemName}
+      />
+    </div>
   );
 };
 
