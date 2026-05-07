@@ -101,6 +101,7 @@ const AddItemModal = ({
   const [localValidationError, setLocalValidationError] = useState<
     string | null
   >(null);
+  const [quantityError, setQuantityError] = useState<string | null>(null);
 
   useEffect(() => {
     if (editingItem) {
@@ -114,6 +115,7 @@ const AddItemModal = ({
     }
     // Clear local validation error when modal opens/closes or editing item changes
     setLocalValidationError(null);
+    setQuantityError(null);
   }, [editingItem, isOpen]);
 
   // Validation function to check if both quantity and measurement are provided together
@@ -138,6 +140,19 @@ const AddItemModal = ({
     setLocalValidationError(validation.error);
   };
 
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // Check if value exceeds maximum
+    if (value && parseFloat(value) > 10000) {
+      setQuantityError("Quantity cannot exceed 10,000");
+      setQuantity("10000");
+    } else {
+      setQuantityError(null);
+      setQuantity(value);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -148,8 +163,14 @@ const AddItemModal = ({
       return;
     }
 
+    // Check quantity doesn't exceed maximum
+    if (quantity && parseFloat(quantity) > 10000) {
+      setQuantityError("Quantity cannot exceed 10,000");
+      return;
+    }
+
     // Check if item name exists and quantity/measurement validation passes
-    if (itemName.trim() && isValidQuantityMeasurement()) {
+    if (itemName.trim() && isValidQuantityMeasurement() && !quantityError) {
       onAddItem({
         name: itemName.toLowerCase().trim(),
         quantity,
@@ -160,15 +181,17 @@ const AddItemModal = ({
       setQuantity("");
       setMeasurement("");
       setLocalValidationError(null);
+      setQuantityError(null);
       onClose();
     }
-  };
+  };;
 
   const handleCancel = () => {
     setItemName("");
     setQuantity("");
     setMeasurement("");
     setLocalValidationError(null);
+    setQuantityError(null);
     onClose();
   };
 
@@ -181,7 +204,8 @@ const AddItemModal = ({
     return (
       !itemName.trim() ||
       !isValidQuantityMeasurement() ||
-      !nameValidation.isValid
+      !nameValidation.isValid ||
+      !!quantityError
     );
   };
 
@@ -226,11 +250,14 @@ const AddItemModal = ({
             <div className="quantity-container">
               <input
                 type="number"
-                className="form-input quantity-input"
+                className={`form-input quantity-input ${quantityError ? "error" : ""}`}
                 value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                onChange={handleQuantityChange}
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
                 placeholder="Amount"
+                max="10000"
+                min="0"
+                step="any"
               />
               <select
                 className="form-select"
@@ -244,6 +271,7 @@ const AddItemModal = ({
                 ))}
               </select>
             </div>
+            {quantityError && <p className="error-message">{quantityError}</p>}
           </div>
 
           <div className="modal-actions">

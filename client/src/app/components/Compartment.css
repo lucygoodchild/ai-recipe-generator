@@ -5,8 +5,7 @@
   padding: 5px 20px;
   border-radius: 30px;
   height: fit-content;
-  width: 250px;
-  max-width: 250px;
+  max-width: 300px;
   box-shadow: 2px 2px 2px 2px rgba(0.1, 0, 0, 0.1);
 }
 
